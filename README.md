@@ -32,7 +32,7 @@ Existe una estructura convencional que debe respetar en mayor medida.
   
   Es recomendable que cada script esté numerado (`01-`, `02-`, etc.) para indicar el orden en que deben ejecutarse; si es que dicho orden existe.
 
-  Si quiere usted crear una función que se utilizará en varios scripts, puede usted hacerlo en un script no numerado. Es recomendable que dicho tenga un nombre significativo, por ejemplo `utilidades.R` o `funciones.R`.
+  Si quiere usted crear una función que se utilizará en varios scripts, puede usted hacerlo en un script no numerado. Es recomendable que dicho script tenga un nombre significativo, por ejemplo `utilidades.R` o `funciones.R`.
 
 - `outputs/` es estrictamente local. El repositorio no debe contener archivos generados por los scripts.
 
@@ -41,6 +41,8 @@ Existe una estructura convencional que debe respetar en mayor medida.
 - `here::here()` es la forma recomendada de referirse a archivos dentro del proyecto. Esto significa que usted no debe utilizar rutas absolutas, ni rutas relativas que dependan de la ubicación del script.
 
 ## Como empezar a trabajar
+
+Es necesario tener instalado RStudio, R, git, en el equipo para poder clonar y trabajar en este proyecto.
 
 Recuerde que este proyecto utiliza `git` como sistema de control de versiones, y RStudio utilizará la consola y la versión que tenga usted instalada para interactuar con `git`.
 
