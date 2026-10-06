@@ -133,3 +133,38 @@ Recuerde que este proyecto utiliza `git` como sistema de control de versiones, y
   source(here::here("scripts", "01-procesamiento.R"))
   ```
   donde `scripts/01-procesamiento.R` es la ruta relativa al script, desde la raíz del proyecto.
+
+### Como usar `git`
+
+Para evitar pisar el trabajo de otros, usted deberá trabajar en una rama separada, suya, y luego hacer *pull request* para que sus cambios sean revisados y fusionados con la rama principal.
+
+Además, es recomendable que nombre su rama con su nombre; `nombre` o `nombre-funcionalidad`, para que sea fácil identificar a quién pertenece la rama.
+
+Aquí algunos comandos interesantes:
+
+```
+// Crear una rama nueva
+git checkout -b nombre-funcionalidad
+```
+
+```
+// Agregar todos los cambios al *staging area*
+git add .
+```
+
+```
+// Hacer *commit* de los cambios
+git commit -m "Mensaje descriptivo de los cambios"
+```
+
+```
+// Subir los cambios a la rama remota
+git push origin nombre-funcionalidad
+```
+
+```
+// Actualizar la rama local con los cambios del repositorio remoto
+git pull origin main
+```
+
+En github, usted puede crear un *pull request* para que sus cambios sean revisados y fusionados con la rama principal.
