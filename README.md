@@ -30,7 +30,7 @@ Existe una estructura convencional que debe respetar en mayor medida.
 
 - `scripts/` debe contener scripts que se ejecutan en orden para generar los datos procesados o realizar análisis.
   
-  Es recomendable que cada script esté numerado (`01-`, `02-`, etc.) para indicar el orden en que deben ejecutarse; si es que dicho orden existe.
+  Es recomendable que cada script esté numerado (`tareaA-01.R`, `tareaA-02.R`, etc.) para indicar el orden en que deben ejecutarse; si es que dicho orden existe.
 
   Si quiere usted crear una función que se utilizará en varios scripts, puede usted hacerlo en un script no numerado. Es recomendable que dicho script tenga un nombre significativo, por ejemplo `utilidades.R` o `funciones.R`.
 
