@@ -12,9 +12,15 @@
 
 rm(list = ls())
 
-source(here("scripts", "Utilidades.R"))
+# Librerías
 
 library(here)
+
+# Funciones externas
+
+source(here("scripts", "Utilidades.R"))
+
+# Script
 
 # necesario por si github no preservó el directorio
 processed_dir <- here::here("data", "processed")
