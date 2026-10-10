@@ -80,19 +80,45 @@ tabla_frecuencias <- DescTools::Freq(lat_base, breaks = breaks, include.lowest =
 h("Tabla de frecuencias - Propuesta 1")
 print(tabla_frecuencias)
 
+# ==== Tabla de frecuencias - Propuesta 2.1 ====
+
 cat0("\nComo podemos observar, existen varios intervalos (6-11) que tienen ",
      "menos de cinco observaciones. Sería pertinente realizar una fusión ",
      "de dichos intervalos.\n")
 
+
+breaks_reagr <-c(breaks[1:6], max(lat_base))
+
+tabla_frec_reagrupada <- DescTools::Freq(lat_base, breaks = breaks_reagr, include.lowest = TRUE)
+
 h("Tabla de frecuencias - Propuesta 2.1")
-breaks_reagrupacion <-c(breaks[1:6], max(lat_base))
-
-tabla_frec_reagrupada <- DescTools::Freq(lat_base, breaks = breaks_reagrupacion, include.lowest = TRUE)
-
 print(tabla_frec_reagrupada)
 
+# ==== Tabla de frecuencias - Propuesta 2.2 ====
+
+cat0("\nPuesto que ahora la amplitud no es homogenía, tendría sentido ",
+     "representar las marcas de clase, las amplitudes y las alturas.\n")
+
+tabla_frec_reagr_frame <- as.data.frame(tabla_frec_reagrupada)
+
+# ya que estamos, renombramos las columnas
+colnames(tabla_frec_reagr_frame) <- c("intervalo", "n_i", "f_i", "N_i", "F_i")
+
+# añadir porcentaje, porque antes f_i lo era
+tabla_frec_reagr_frame$perc <- round((tabla_frec_reagr_frame$f_i * 100), 2)
+
+# para hacer esto, vamos a crear dos vectores
+a_inf <- breaks_reagr[1:(length(breaks_reagr) - 1)] # vector: limites inferiores
+a_sup <- breaks_reagr[2:length(breaks_reagr)] # vector: limites superiores
+
+tabla_frec_reagr_frame$m_i <- round((a_inf + a_sup) / 2, 3)
+tabla_frec_reagr_frame$c_i <- round(a_sup - a_inf, 3)
+tabla_frec_reagr_frame$h_i <- round(tabla_frec_reagr_frame$n_i / tabla_frec_reagr_frame$c_i, 3)
+
+h("Tabla de frecuencias - Propuesta 2.2")
+print(tabla_frec_reagr_frame)
 
 
-
-
-
+path_processed_tabla <- here::here("data", "processed", "latencia_base_01_tabla_frecuencias.RData")
+save(tabla_frec_reagr_frame, file = path_processed_tabla)
+cat("\nSe ha generado el fichero: ", path_processed_tabla, "\n")
