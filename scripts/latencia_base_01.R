@@ -53,5 +53,38 @@ cat0("Rango de valores observados: [", rango_vals[1], " (ms), ", rango_vals[2], 
 h("Conclusión inicial")
 cat0("La variable Latencia Base tiene un número de valores (únicos) ",
      "considerable. No es factible la discretización. Es necesario realizar ",
-     "un agrupamiento.")
+     "un agrupamiento.\n")
+
+# ==== Agrupación ====
+h("Agrupación")
+
+k_raiz <- round(sqrt(length(lat_base)), 0)
+k_sturges <- nclass.Sturges(lat_base)
+
+cat0("Número de clases (raíz): ", k_raiz, "\n")
+cat0("Número de clases (Sturges): ", k_sturges, "\n")
+cat0("32 son demasiadas clases, 11 parece un número razonable.\n\n")
+
+amplitud <- (rango_vals[2] - rango_vals[1]) / k_sturges
+breaks <- seq(rango_vals[1], rango_vals[2], by=amplitud)
+
+cat0("Número de intervalos elegido (k): ", k_sturges, "\n")
+cat0("Amplitud de intervalo (c): ", round(amplitud, 4), "\n")
+cat("Límites de intervalos:", breaks, "\n")
+
+# ==== Tablas de frecuencias ====
+
+tabla_frecuencias <- DescTools::Freq(lat_base, breaks = breaks, include.lowest = TRUE)
+# colnames(tabla_frecuencias) <- c("intervalo", "n_i", "f_i", "N_i", "F_i")
+
+h("Tabla de frecuencias - Propuesta 1")
+print(tabla_frecuencias)
+
+cat0("\nComo podemos observar, existen varios intervalos (6-11) que tienen ",
+     "menos de cinco observaciones. Sería pertinente realizar una fusión ",
+     "de dichos intervalos.\n")
+
+
+
+
 
