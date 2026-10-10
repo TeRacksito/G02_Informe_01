@@ -84,6 +84,14 @@ cat0("\nComo podemos observar, existen varios intervalos (6-11) que tienen ",
      "menos de cinco observaciones. Sería pertinente realizar una fusión ",
      "de dichos intervalos.\n")
 
+h("Tabla de frecuencias - Propuesta 2.1")
+breaks_reagrupacion <-c(breaks[1:6], max(lat_base))
+
+tabla_frec_reagrupada <- DescTools::Freq(lat_base, breaks = breaks_reagrupacion, include.lowest = TRUE)
+
+print(tabla_frec_reagrupada)
+
+
 
 
 
