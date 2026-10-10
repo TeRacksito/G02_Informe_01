@@ -7,3 +7,5 @@
 h <- function(texto) {
   cat(sprintf("\n-- %s --\n", toupper(texto)))
 }
+
+cat0 <- function(...) cat(..., sep = "")
