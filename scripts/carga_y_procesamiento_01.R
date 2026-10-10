@@ -77,7 +77,7 @@ datos_cloud$Containers <- as.numeric(datos_cloud$Containers)
 # ==== Atributos Ordinales ====
 # Restarts: Número de caídas/reinicios
 # Atributo ordinal (0 < 1 < 2)
-# A pesar de que son números, son tan pocos que funcionan etiquetas
+# A pesar de que son números, son tan pocos que funcionan como etiquetas
 # Por ello, voy a incluso etiquetarlas.
 datos_cloud$Restarts <- factor(
   datos_cloud$Restarts,

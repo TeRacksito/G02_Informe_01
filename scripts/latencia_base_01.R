@@ -33,7 +33,7 @@ load(path_datos)
 h("Dataframe")
 str(datos_cloud)
 
-lat_base <- datos_cloud$Lat_Bas
+lat_base <- datos_cloud$Lat_Base
 
 # ==== Información Base ====
 h("Información Base")
