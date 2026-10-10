@@ -1,26 +1,29 @@
-# ==============================================================================
+# Cabecera =====================================================================
 # Tarea: Cargar y Procesamiento
 # Script 01: carga y definición inicial de tipos de variables
 # Autor: Angel Krasimirov Stoyanov
 # 
 # Este script tiene como objeto exportar un RData para ser utilizado en los
 # posteriores análisis.
+#
+# Entradas esperadas:
+# - data/raw/Cloud_Performance_01.csv
 # 
 # Salidas:
 # - data/processed/Cloud_Performance_procesado.RData
-# ==============================================================================
+# ______________________________________________________________________________
 
 rm(list = ls())
 
-# Librerías
+# ==== Librerías ====
 
 library(here)
 
-# Funciones externas
+# ==== Funciones externas ====
 
 source(here("scripts", "Utilidades.R"))
 
-# Script
+# ==== Script ====
 
 # necesario por si github no preservó el directorio
 processed_dir <- here::here("data", "processed")
@@ -42,7 +45,7 @@ datos_cloud <- datos_raw
 h("dataframe en bruto")
 str(datos_cloud)
 
-# -- Variables Discretas y Continuas
+# ==== Variables Discretas y Continuas ====
 # ID: Cadena alfanumérica única
 # No es una variable estadística.
 datos_cloud$ID <- as.character(datos_cloud$ID)
@@ -71,7 +74,7 @@ datos_cloud$Bandwidth <- as.numeric(datos_cloud$Bandwidth)
 # Variable Cuantitativa Discreta
 datos_cloud$Containers <- as.numeric(datos_cloud$Containers)
 
-# -- Atributos Ordinales --
+# ==== Atributos Ordinales ====
 # Restarts: Número de caídas/reinicios
 # Atributo ordinal (0 < 1 < 2)
 # A pesar de que son números, son tan pocos que funcionan etiquetas
@@ -92,7 +95,7 @@ datos_cloud$Efficiency <- factor(
 )
 
 
-# -- Atributos Nominales --
+# ==== Atributos Nominales ====
 # Provider: Proveedor cloud
 # Atributo nominal (AWS, Azure, GCP)
 datos_cloud$Provider <- factor(
@@ -107,6 +110,7 @@ datos_cloud$Region <- factor(
   levels = c("Asia-Pacific", "EU-West", "US-East")
 )
 
+# ==== Guardar dataframe ====
 h("dataframe")
 str(datos_cloud)
 
