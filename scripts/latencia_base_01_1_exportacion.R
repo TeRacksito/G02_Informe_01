@@ -27,6 +27,9 @@ source(here("scripts", "Utilidades.R"))
 # ==== Script ====
 
 path_tabla <- here::here("data", "processed", "latencia_base_01_tabla_frecuencias.RData")
+if (!file.exists(path_tabla)) {
+  stop(paste("ERROR: Se esperaba:", path_tabla))
+}
 load(path_tabla)
 
 print(tabla_frec_reagr_frame)
