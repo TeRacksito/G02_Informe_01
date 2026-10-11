@@ -53,3 +53,54 @@ lat_base <- datos_cloud$Lat_Base
 
 h("Resumen estadístico Latencia Base")
 print(summary(lat_base))
+
+# ==== Medidas de tendencia central ====
+h("Medidas de tendencia central ")
+
+w_media <- weighted.mean(tabla_frec$m_i, tabla_frec$f_i)
+cat0("Media Agrupada: ", w_media, " (ms)\n")
+
+media <- mean(lat_base, na.rm = TRUE)
+cat0("Media: ", media, " (ms)\n")
+
+mediana <- median(lat_base, na.rm = TRUE)
+cat0("Mediana: ", mediana, " (ms)\n")
+
+modas <- DescTools::Mode(lat_base, na.rm = TRUE)
+cat("Modas:", modas, " (ms)\n")
+
+cat0("\nComo podemos ver, hay muchas modas, porque calcular la moda de una ",
+     "variable continua sin agrupar no teine mucho sentido estadistico.\n",
+     "Calculemos la moda de los intervalos de la distribución.\n\n")
+
+# si usamos which.max no tendríamos en cuenta múltiples intervalos modales.
+# Aunque en este caso no ocurre, prefiero intentar hacerlo bien.
+
+max_h <- max(tabla_frec$h_i)
+
+indices_modales <- which(tabla_frec$h_i == max_h)
+
+intervalos_modales <- tabla_frec$intervalo[indices_modales]
+clases_modales <- tabla_frec$m_i[indices_modales]
+
+cat("Intervalos modales:", paste(intervalos_modales, collapse = " y "), "\n")
+cat("Modas (m_i):", paste(clases_modales, collapse = " y "), "(ms)\n")
+
+cat0("\nSolo tenemos un intervalo modal. Es decir, Unimodal.\n")
+
+tabla_med_centrales <- data.frame(
+  "media_agrupada" = round(w_media, 3),
+  "media" = round(media, 3),
+  "mediana" = round(mediana, 3),
+  "intervalo_modal" = intervalos_modales[1],
+  row.names = ""
+)
+
+h("Tabla de medidas de tendencia central")
+print(tabla_med_centrales)
+
+path_tabla_med_centrales <- here::here("data", "processed", "latencia_base_02_trabla_med_centrales.RData")
+save(tabla_med_centrales, file = path_tabla_med_centrales)
+cat("\nSe ha generado el fichero: ", path_tabla_med_centrales, "\n")
+
+
