@@ -106,7 +106,7 @@ tabla_frec_reagr_frame <- as.data.frame(tabla_frec_reagrupada)
 colnames(tabla_frec_reagr_frame) <- c("intervalo", "n_i", "f_i", "N_i", "F_i")
 
 # añadir porcentaje, porque antes f_i lo era
-tabla_frec_reagr_frame$perc <- round((tabla_frec_reagr_frame$f_i * 100), 2)
+tabla_frec_reagr_frame$perc_i <- round((tabla_frec_reagr_frame$f_i * 100), 2)
 
 # para hacer esto, vamos a crear dos vectores
 a_inf <- breaks_reagr[1:(length(breaks_reagr) - 1)] # vector: limites inferiores
