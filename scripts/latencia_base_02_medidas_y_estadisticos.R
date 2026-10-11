@@ -11,8 +11,8 @@
 # - data/processed/latencia_base_01_tabla_frecuencias.RData
 # 
 # Salidas:
-# - data/processed/latencia_base_02_trabla_med_centrales.RData
-# - data/processed/latencia_base_02_trabla_med_dispersion.RData
+# - data/processed/latencia_base_02_tabla_med_centrales.RData
+# - data/processed/latencia_base_02_tabla_med_dispersion.RData
 # ______________________________________________________________________________
 
 rm(list = ls())
@@ -101,7 +101,7 @@ tabla_med_centrales <- data.frame(
 h("Tabla de medidas de tendencia central")
 print(tabla_med_centrales)
 
-path_tabla_med_centrales <- here::here("data", "processed", "latencia_base_02_trabla_med_centrales.RData")
+path_tabla_med_centrales <- here::here("data", "processed", "latencia_base_02_tabla_med_centrales.RData")
 save(tabla_med_centrales, file = path_tabla_med_centrales)
 cat("\nSe ha generado el fichero: ", path_tabla_med_centrales, "\n")
 
@@ -134,7 +134,12 @@ cat0("El coeficiente de variación es mayor del 30% ",
      "(", cv_pearson_perc, "% > 30%). Esto indica que la media (",
      round(media, 3), " (ms)) no es representativa.\n",
      "Es recomendable utilizar la mediana (",
-     round(mediana, 3), " (ms)) como indicador robusto.\n")
+     round(mediana, 3), " (ms)) como indicador robusto.\n\n")
+
+cat0("El rango intercuartílico es sensiblemente más pequeño (",
+     round(rango_iqr, 3), ") que el rango de la muestra (",
+     round(rango, 3), "). Esto significa que el 50% de las observaciones ",
+     "recaen un unos valores muy juntos.\n")
 
 tabla_med_dispersion <- data.frame(
   "cuasivarianza" = round(cuasivarianza, 3),
@@ -149,7 +154,7 @@ tabla_med_dispersion <- data.frame(
 h("Tabla de medidas de dispersión")
 print(tabla_med_dispersion)
 
-path_tabla_med_dispersion <- here::here("data", "processed", "latencia_base_02_trabla_med_dispersion.RData")
+path_tabla_med_dispersion <- here::here("data", "processed", "latencia_base_02_tabla_med_dispersion.RData")
 save(tabla_med_dispersion, file = path_tabla_med_dispersion)
 cat("\nSe ha generado el fichero: ", path_tabla_med_dispersion, "\n")
 
