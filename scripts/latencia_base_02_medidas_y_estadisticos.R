@@ -13,6 +13,8 @@
 # Salidas:
 # - data/processed/latencia_base_02_tabla_med_centrales.RData
 # - data/processed/latencia_base_02_tabla_med_dispersion.RData
+# - data/processed/latencia_base_02_vectores_med_posicion.RData
+# - data/processed/latencia_base_02_tabla_med_forma.RData
 # ______________________________________________________________________________
 
 rm(list = ls())
@@ -21,6 +23,7 @@ rm(list = ls())
 
 library(here)
 library(DescTools)
+library(e1071)
 
 # ==== Funciones externas ====
 
@@ -201,3 +204,39 @@ cat0("Sin embargo, también podemos afirmar que se garantiza una latencia ",
 path_med_posicion <- here::here("data", "processed", "latencia_base_02_vectores_med_posicion.RData")
 save(cuartiles, deciles, percentiles_interesantes, file = path_med_posicion)
 cat("\nSe ha generado el fichero: ", path_med_posicion, "\n")
+
+# ==== Medidas de forma ====
+h("Medidas de forma")
+
+asimetria <- e1071::skewness(lat_base, na.rm = TRUE, type = 3)
+cat0("Coeficiente de Asimetría de Fisher: ", round(asimetria, 3), "\n")
+
+curtosis <- kurtosis(lat_base, na.rm = TRUE, type = 3)
+cat0("Coeficiente de Curtosis: ", round(curtosis, 3), "\n")
+
+h("Observaciones")
+cat0("El Coeficiente de asimetría de Fisher es positivo (",
+     round(asimetria, 3), " > 0), lo cual indica que existe una asimetría o ",
+     "sesgo a la derecha. Confirma nuestra sospecha inicial al observar ",
+     "las medidas de posición.\n\n")
+
+cat0("El coeficiente de Curtosis es positivo (",
+     round(curtosis, 3), " > 0), lo cual indica que la distribución es ",
+     "bastante más apuntada que la distribución normal. Es decir, la ",
+     "distribución es Leptocúrtica. Confirma nuestra sospecha inicial al ",
+     "observar las medidas de dispersión.\n")
+
+
+tabla_med_forma <- data.frame(
+  "asimetria" = round(asimetria, 3),
+  "curtosis" = round(curtosis, 3),
+  row.names = ""
+)
+
+h("Tabla de medidas de forma")
+print(tabla_med_forma)
+
+path_tabla_med_forma <- here::here("data", "processed", "latencia_base_02_tabla_med_forma.RData")
+save(tabla_med_forma, file = path_tabla_med_forma)
+cat("\nSe ha generado el fichero: ", path_tabla_med_forma, "\n")
+
