@@ -91,7 +91,8 @@ clases_modales <- tabla_frec$m_i[indices_modales]
 cat("Intervalos modales:", paste(intervalos_modales, collapse = " y "), "\n")
 cat("Modas (m_i):", paste(clases_modales, collapse = " y "), "(ms)\n")
 
-cat0("\nSolo tenemos un intervalo modal. Es decir, Unimodal.\n")
+h("Observaciones")
+cat0("Solo tenemos un intervalo modal. Es decir, Unimodal.\n")
 
 tabla_med_centrales <- data.frame(
   "media_agrupada" = round(w_media, 3),
