@@ -29,6 +29,9 @@ source(here("scripts", "Utilidades.R"))
 
 # cargar dataframe datos_cloud
 path_datos <- here::here("data", "processed", "Cloud_Performance_procesado.RData")
+if (!file.exists(path_datos)) {
+  stop(paste("ERROR: Se esperaba:", path_datos))
+}
 load(path_datos)
 
 h("Dataframe")
