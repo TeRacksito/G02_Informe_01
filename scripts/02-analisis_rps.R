@@ -74,6 +74,36 @@ cat("variable cuantitativa con multitud de valores numéricos distintos.\n")
 cat("Un gráfico de sectores crearía demasiadas porciones ilegibles.\n")
 cat("Por ello, la representación correcta es un HISTOGRAMA de frecuencias.\n")
 
+
+cat("\n=====================================================\n")
+cat("      3. TABLA DE FRECUENCIAS Y FORMA DE DISTRIBUCIÓN \n")
+cat("=====================================================\n")
+
+# 1. Tabla de frecuencias agrupadas (¿Cómo se agrupa la frecuencia?)
+cat("\n--- Tabla de Frecuencias Agrupadas ---\n")
+tabla_frecuencias <- Freq(datos_cloud$RPS, na.rm = TRUE)
+print(tabla_frecuencias)
+
+# 2. Representatividad de la media (¿Es la media representativa?)
+cat("\n--- Representatividad de la Media ---\n")
+cv_rps <- (sd_rps / media_rps) * 100
+cat(" Coeficiente de Variación (CV):", round(cv_rps, 2), "%\n")
+if (cv_rps < 30) {
+  cat(" Interpretación: Como el CV es menor al 30%, la media SÍ es representativa del tráfico.\n")
+} else {
+  cat(" Interpretación: Como el CV supera el 30%, hay mucha dispersión y la media NO es muy representativa.\n")
+}
+
+# 3. Forma de la distribución (Asimetría y Curtosis)
+cat("\n--- Forma de la Distribución ---\n")
+asimetria_rps <- Skew(datos_cloud$RPS, na.rm = TRUE)
+curtosis_rps <- Kurt(datos_cloud$RPS, na.rm = TRUE)
+
+cat(" Asimetría (Skewness):", round(asimetria_rps, 2), "\n")
+cat(" Curtosis (Kurtosis):", round(curtosis_rps, 2), "\n")
+cat("-----------------------------------------------------\n")
+
+
 # 5. GENERACIÓN Y GUARDADO DEL GRÁFICO
 
 dir.create(here::here("outputs"), showWarnings = FALSE, recursive = TRUE)
