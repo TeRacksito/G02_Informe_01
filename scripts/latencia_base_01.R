@@ -10,6 +10,7 @@
 # - data/processed/Cloud_Performance_procesado.RData
 # 
 # Salidas:
+# - data/processed/latencia_base_01_tabla_frecuencias.RData
 # ______________________________________________________________________________
 
 
@@ -96,7 +97,7 @@ print(tabla_frec_reagrupada)
 
 # ==== Tabla de frecuencias - Propuesta 2.2 ====
 
-cat0("\nPuesto que ahora la amplitud no es homogenía, tendría sentido ",
+cat0("\nPuesto que ahora la amplitud no es homogénea, tendría sentido ",
      "representar las marcas de clase, las amplitudes y las alturas.\n")
 
 tabla_frec_reagr_frame <- as.data.frame(tabla_frec_reagrupada)
@@ -117,7 +118,6 @@ tabla_frec_reagr_frame$h_i <- round(tabla_frec_reagr_frame$n_i / tabla_frec_reag
 
 h("Tabla de frecuencias - Propuesta 2.2")
 print(tabla_frec_reagr_frame)
-
 
 path_processed_tabla <- here::here("data", "processed", "latencia_base_01_tabla_frecuencias.RData")
 save(tabla_frec_reagr_frame, file = path_processed_tabla)
