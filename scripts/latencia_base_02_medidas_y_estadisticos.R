@@ -11,6 +11,8 @@
 # - data/processed/latencia_base_01_tabla_frecuencias.RData
 # 
 # Salidas:
+# - data/processed/latencia_base_02_trabla_med_centrales.RData
+# - data/processed/latencia_base_02_trabla_med_dispersion.RData
 # ______________________________________________________________________________
 
 rm(list = ls())
@@ -55,7 +57,7 @@ h("Resumen estadístico Latencia Base")
 print(summary(lat_base))
 
 # ==== Medidas de tendencia central ====
-h("Medidas de tendencia central ")
+h("Medidas de tendencia central")
 
 w_media <- weighted.mean(tabla_frec$m_i, tabla_frec$f_i)
 cat0("Media Agrupada: ", w_media, " (ms)\n")
@@ -103,4 +105,51 @@ path_tabla_med_centrales <- here::here("data", "processed", "latencia_base_02_tr
 save(tabla_med_centrales, file = path_tabla_med_centrales)
 cat("\nSe ha generado el fichero: ", path_tabla_med_centrales, "\n")
 
+# ==== Medidas de dispersión ====
+h("Medidas de dispersión")
+
+n_muestra <- length(lat_base)
+
+cuasivarianza <- var(lat_base, na.rm = TRUE)
+cuasidesviacion <- sd(lat_base, na.rm = TRUE)
+
+varianza <- cuasivarianza * (n_muestra - 1) / n_muestra
+cat0("Varianza: ",  round(varianza, 3), "\n")
+
+desviacion <- sqrt(varianza)
+cat0("Desviación estándar: ", round(desviacion, 3), "\n")
+
+cv_pearson <- desviacion / abs(media)
+cv_pearson_perc <- round(cv_pearson * 100, 2)
+cat0("Coeficiente de Variación de Pearson: ", cv_pearson_perc, "%\n")
+
+rango <- diff(range(lat_base, na.rm = TRUE))
+cat0("Rango: ", round(rango, 3), "\n")
+
+rango_iqr <- IQR(lat_base, na.rm = TRUE)
+cat0("Rango Intercuartílico: ", round(rango_iqr, 3), "\n")
+
+h("Observaciones")
+cat0("El coeficiente de variación es mayor del 30% ",
+     "(", cv_pearson_perc, "% > 30%). Esto indica que la media (",
+     round(media, 3), " (ms)) no es representativa.\n",
+     "Es recomendable utilizar la mediana (",
+     round(mediana, 3), " (ms)) como indicador robusto.\n")
+
+tabla_med_dispersion <- data.frame(
+  "cuasivarianza" = round(cuasivarianza, 3),
+  "cuasidesviacion" = round(cuasidesviacion, 3),
+  "varianza" = round(varianza, 3),
+  "desviacion" = round(desviacion, 3),
+  "cv_pearson" = round(cv_pearson, 3),
+  "rango" = round(rango, 3),
+  "iqr" = round(rango_iqr, 3)
+)
+
+h("Tabla de medidas de dispersión")
+print(tabla_med_dispersion)
+
+path_tabla_med_dispersion <- here::here("data", "processed", "latencia_base_02_trabla_med_dispersion.RData")
+save(tabla_med_dispersion, file = path_tabla_med_dispersion)
+cat("\nSe ha generado el fichero: ", path_tabla_med_dispersion, "\n")
 
