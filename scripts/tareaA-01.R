@@ -17,7 +17,7 @@
 
 # 1. INSTALACIÓN Y CARGA DE PAQUETES
 
-install.packages(c("DescTools", "ggplot2"))
+
 library(here)
 library(DescTools)
 library(ggplot2)
@@ -37,7 +37,7 @@ modaeff
 # Cálculo de la mediana
 medianaeff <- quantile(datos_cloud$Efficiency, 0.5, type = 1)
 medianaeff
-
+# 
 # Diagrama de barras ggplot
 ggplot(datos_cloud, aes(x = Efficiency)) + 
   geom_bar(fill = "white", colour = "black") + 
