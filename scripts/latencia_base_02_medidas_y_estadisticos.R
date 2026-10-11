@@ -158,3 +158,46 @@ path_tabla_med_dispersion <- here::here("data", "processed", "latencia_base_02_t
 save(tabla_med_dispersion, file = path_tabla_med_dispersion)
 cat("\nSe ha generado el fichero: ", path_tabla_med_dispersion, "\n")
 
+# ==== Medidas de posición ====
+h("Medidas de posición")
+
+cuartiles <- quantile(lat_base, seq(0.25, 0.75, by = 0.25), na.rm = TRUE)
+cat0("Cuartiles:\n")
+print(round(cuartiles, 3))
+
+deciles <- quantile(lat_base, seq(0.1, 0.9, by = 0.1), na.rm = TRUE)
+cat0("\nDeciles:\n")
+print(round(deciles, 3))
+
+percentiles_interesantes <- quantile(lat_base, c(0.05, 0.90, 0.95), na.rm = TRUE)
+cat0("\nPercentiles (P5, P90, P95):\n")
+print(round(percentiles_interesantes, 3))
+
+percentiles <- quantile(lat_base, seq(0.01, 0.99, by = 0.01), na.rm = TRUE)
+cat0("\nPercentiles (Todos):\n")
+print(round(percentiles, 3))
+
+h("Observaciones")
+cat0("Efectivamente, el 50% concuerda con la mediana: ", round(mediana, 3), "\n\n")
+
+cat0("Observamos una larga cola por la derecha. Tenemos que pensar que esta ",
+     "cola (P95 a P99) representa las latencias más lentas. Es decir, ",
+     "las peores experiencias de usuario.\n\n")
+
+cat0("Podemos afirmar que el 4% de los peores casos presenta una gran ", 
+     "variabilidad frente al 50%. Es decir, tenemos valores atípicos.\n",
+     "Esto significa que, antes de implementar la cache en memoria, ",
+     "los microservicios se presentan inestables y generan una mala ",
+     "experiencia de usuario.\n",
+     "Sería interesante comparar esta situación con `Lat_Post` ", 
+     "(Latencia tras haber implementado la cache).\n\n")
+
+cat0("Sin embargo, también podemos afirmar que se garantiza una latencia ",
+     "inferior a ", round(percentiles_interesantes[2], 1), "ms para el 90% ",
+     "de las conexiones; indicando que si existe algún tipo de estabilidad si ",
+     "se pudiera eliminar los valores atípicos. Es decir, si parece que pueda ",
+     "haber algúna solución a la inestabilidad anterioremente descrita.\n")
+
+path_med_posicion <- here::here("data", "processed", "latencia_base_02_vectores_med_posicion.RData")
+save(cuartiles, deciles, percentiles_interesantes, file = path_med_posicion)
+cat("\nSe ha generado el fichero: ", path_med_posicion, "\n")
