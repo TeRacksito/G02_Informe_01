@@ -82,7 +82,7 @@ path_grafico <- here::here("outputs", "eficiencia_01_diagrama_barras_frecuencias
 ggsave(
   filename = path_grafico, 
   plot = p_eficiencia, 
-  width = 8, 
+  width = 8,
   height = 6, 
   dpi = 300
 )
