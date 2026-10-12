@@ -48,13 +48,23 @@ cat("      2. MEDIDAS DESCRIPTIVAS E INTERPRETACIÓN      \n")
 
 # Cálculo de la moda
 modaeff <- Mode(datos_cloud$Efficiency)
-cat(" Moda: ", as.character(modaeff), "\n")
-cat(" La categoría de eficiencia energética más frecuente es ", as.character(modaeff), "\n")
+num_moda <- attr(modaeff, "freq")
+cat(" Moda: ", as.character(modaeff[1]), " (freq = ", num_moda, ")\n")
+cat(" La categoría de eficiencia energética más frecuente es ", as.character(modaeff[1]), " con ", num_moda, " servidores.\n")
 
 # Cálculo de la mediana
 medianaeff <- quantile(datos_cloud$Efficiency, 0.5, type = 1)
-cat(" Mediana: ", as.character(medianaeff), "\n")
-cat(" Al ser ordinal, el 50% de los servidores tiene eficiencia ", as.character(medianaeff), " o inferior.\n")
+num_mediana_acum <- sum(datos_cloud$Efficiency <= medianaeff)
+cat(" Mediana: ", as.character(medianaeff), " (frecuencia acumulada = ", num_mediana_acum, ")\n")
+cat(" Al ser ordinal, el 50% de los servidores (", num_mediana_acum, " servidores) tiene eficiencia ", as.character(medianaeff), " o inferior.\n")
+
+# Cuartiales
+q1_eff <- quantile(datos_cloud$Efficiency, 0.25, type = 1)
+q3_eff <- quantile(datos_cloud$Efficiency, 0.75, type = 1)
+cat(" Primer Cuartil Q1 - 25% : ", as.character(q1_eff), "\n")
+cat(" El 25% de los servidores tiene como máximo eficiencia ", as.character(q1_eff), "\n")
+cat(" Tercer Cuartil Q3 - 75% : ", as.character(q3_eff), "\n")
+cat(" El 75% de los servidores tiene como máximo eficiencia ", as.character(q3_eff), "\n")
 
 # Cuestión 3.a: Porcentaje Superior a Bronze
 pct_sup_bronze <- mean(datos_cloud$Efficiency > "Bronze", na.rm = TRUE) * 100
@@ -88,4 +98,3 @@ ggsave(
 )
 
 cat("Se ha generado correctamente el artefacto gráfico en:\n", path_grafico, "\n")
-# 
