@@ -62,7 +62,7 @@ print(round(deciles, 3))
 cat0("\nPercentiles (P5, P90, P95):\n")
 print(round(percentiles_interesantes, 3))
 
-# cargar dataframe `tabla_med_dispersion`
+# cargar dataframe `tabla_med_forma`
 path_tabla_med_forma <- here::here("data", "processed", "latencia_base_02_tabla_med_forma.RData")
 if (!file.exists(path_tabla_med_forma)) {
   stop(paste("ERROR: Se esperaba:", path_tabla_med_forma))
@@ -169,4 +169,15 @@ exportar_tabla(
   "Percentiles Interesantes"
 )
 
+# ==== Exportar - Med Forma ====
 
+colnames(tabla_med_forma) <- c(
+  "Asimetría (A<sub>F</sub>)",
+  "Curtosis (g<sub>2</sub>)"
+)
+
+exportar_tabla(
+  tabla_med_forma,
+  here::here("outputs", "latencia_base_02_tabla_med_forma.png"),
+  "Medidas de Forma"
+)
