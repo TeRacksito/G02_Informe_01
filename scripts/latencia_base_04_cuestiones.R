@@ -14,6 +14,8 @@
 # - data/processed/latencia_base_02_vectores_med_posicion.RData
 # 
 # Salidas:
+# - data/processed/latencia_base_04_tabla_atipicos.RData
+# - data/processed/latencia_base_04_tabla_comparacion.RData
 # ______________________________________________________________________________
 
 rm(list = ls())
@@ -134,7 +136,7 @@ cat0("Todos presentan un uso intensivo de CPU (", atipicos_frame_top3$CPU[3],
      "% - ", atipicos_frame_top3$CPU[1], "%) al momento de registar la latencia. ",
      "Esto podría indicar colapsos o nodos saturados.\n")
 
-path_tabla_atipicos <- here::here("data", "processed", "latencia_base_03_tabla_atipicos.RData")
+path_tabla_atipicos <- here::here("data", "processed", "latencia_base_04_tabla_atipicos.RData")
 save(atipicos_frame_top3, file = path_tabla_atipicos)
 cat("\nSe ha generado el fichero: ", path_tabla_atipicos, "\n")
 
@@ -165,6 +167,7 @@ cat0("Rango Intercuartílico: ", round(iqr_post, 3), "\n")
 max_post <- max(lat_post, na.rm = TRUE)
 cat0("Valor máximo: ", round(max_post, 3), "\n")
 
+perc_mejora_media <- ((tabla_med_centrales$media - media_post) / tabla_med_centrales$media) * 100
 perc_mejora_mediana <- ((tabla_med_centrales$mediana - mediana_post) / tabla_med_centrales$mediana) * 100
 perc_mejora_iqr <- ((tabla_med_dispersion$iqr - iqr_post) / tabla_med_dispersion$iqr) * 100
 
@@ -177,3 +180,20 @@ cat0("\nLa implementación de la capa de caché en memoria RAM ha reducido el ",
      "%.\n")
 cat0("Además, se han eliminado en mayor medida los valores atípicos extremos (",
      round(max_post, 3), " ms frente a ", round(max_base, 3), " ms).\n")
+
+tabla_comparacion <- data.frame(
+  metrica = c("Media (ms)", "Mediana (ms)", "IQR (ms)", "Máximo (ms)"),
+  lat_base = c(round(tabla_med_centrales$media, 2), round(tabla_med_centrales$mediana, 2), round(tabla_med_dispersion$iqr, 2), round(max_base, 2)),
+  lat_post = c(round(media_post, 2), round(mediana_post, 2), round(iqr_post, 2), round(max_post, 2)),
+  mejora = c(
+    paste0(round(perc_mejora_media, 1), "%"),
+    paste0(round(perc_mejora_mediana, 1), "%"),
+    paste0(round(perc_mejora_iqr, 1), "%"),
+    paste0(round(perc_mejora_max, 1), "%")
+  ),
+  check.names = FALSE
+)
+
+path_tabla_comparacion <- here::here("data", "processed", "latencia_base_04_tabla_comparacion.RData")
+save(tabla_comparacion, file = path_tabla_comparacion)
+cat("\nSe ha generado el fichero: ", path_tabla_comparacion, "\n")
