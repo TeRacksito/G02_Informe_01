@@ -1,0 +1,66 @@
+# Cabecera =====================================================================
+# Tarea: Analizar Latencia Base
+# Script 04_1: Exportar tablas estilizadas.
+# Autor: Angel Krasimirov Stoyanov
+# 
+# Intentar exportar png estilizado de las tablas que genera el script
+# `latencia_base_04_cuestiones.R`.
+#
+# Entradas esperadas:
+# - data/processed/latencia_base_04_tabla_atipicos.RData
+# - data/processed/latencia_base_04_tabla_comparacion.RData
+#
+# Salidas:
+# - outputs/latencia_base_04_tabla_atipicos.png
+# - outputs/latencia_base_04_tabla_comparacion.png
+# ______________________________________________________________________________
+
+rm(list = ls())
+
+# ==== Librerías ====
+
+library(here)
+library(knitr)
+library(kableExtra)
+
+# ==== Funciones externas ====
+
+source(here("scripts", "Utilidades.R"))
+
+# ==== Script ====
+# cargar dataframe `tabla_atipicos`
+path_tabla_atipicos <- here::here("data", "processed", "latencia_base_04_tabla_atipicos.RData")
+if (!file.exists(path_tabla_atipicos)) {
+  stop(paste("ERROR: Se esperaba:", path_tabla_atipicos))
+}
+load(path_tabla_atipicos)
+
+# cargar dataframe `tabla_comparacion`
+path_tabla_comparacion <- here::here("data", "processed", "latencia_base_04_tabla_comparacion.RData")
+if (!file.exists(path_tabla_comparacion)) {
+  stop(paste("ERROR: Se esperaba:", path_tabla_comparacion))
+}
+load(path_tabla_comparacion)
+
+# ==== Exportar - Tabla de valores atípicos ====
+
+exportar_tabla(
+  atipicos_frame_top3,
+  here::here("outputs", "latencia_base_04_tabla_atipicos.png"),
+  "Tabla de valores atípicos de Latencia Base (Top 3)."
+)
+
+# ==== Exportar - Tabla de comparación ====
+
+colnames(tabla_comparacion) <- c(
+  "Métrica",
+  "Latencia Sin Caché",
+  "Latencia Con Caché",
+  "Mejora (%)"
+)
+
+exportar_tabla(
+  tabla_comparacion,
+  here::here("outputs", "latencia_base_04_tabla_comparacion.png"),
+  "Tabla de comparación de Latencia Base."
+)
