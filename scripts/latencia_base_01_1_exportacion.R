@@ -48,21 +48,8 @@ colnames(tabla_frec_reagr_frame) <- c(
   "h<sub>i</sub>"
   )
 
-tabla_kbl <- tabla_frec_reagr_frame %>%
-  kbl(
-    caption = "Distribución de Frecuencias de 'Latencia Base'",
-    align = "c",
-    row.names = FALSE,
-    escape = FALSE # fix: permite interpretar los <sub>
-  ) %>%
-  kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed"),
-    full_width = FALSE,
-    position = "center"
-  ) %>%
-  row_spec(0, bold = TRUE, background = "#5C068C", color = "white")
-
-cat0("\nGuardando resultado PNG, espere un momento...")
-path_tabla_kbl <- here::here("outputs", "latencia_base_01_tabla_frecuencias.png")
-save_kable(tabla_kbl, file = path_tabla_kbl, zoom = 2)
-cat("Se ha generado el fichero: ", path_tabla_kbl, "\n")
+exportar_tabla(
+  tabla_frec_reagr_frame,
+  here::here("outputs", "latencia_base_01_tabla_frecuencias.png"),
+  "Distribución de Frecuencias de 'Latencia Base'"
+)
