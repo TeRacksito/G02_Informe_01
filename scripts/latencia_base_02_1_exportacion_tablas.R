@@ -72,4 +72,33 @@ load(path_tabla_med_forma)
 h("Tabla de medidas de forma")
 print(tabla_med_forma)
 
+# ==== Exportar - Med Tendencia Central ====
+
+colnames(tabla_med_centrales) <- c(
+  "Media Agrupada",
+  "Media",
+  "Mediana",
+  "Moda",
+  "Intervalo Modal"
+)
+
+tabla_kbl <- tabla_med_centrales %>%
+  kbl(
+    caption = "Medidas de Tendencia Central",
+    align = "c",
+    row.names = FALSE,
+    escape = FALSE
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE,
+    position = "center"
+  ) %>%
+  row_spec(0, bold = TRUE, background = "#5C068C", color = "white")
+
+cat0("\nGuardando resultado PNG, espere un momento...")
+path_tabla_kbl <- here::here("outputs", "latencia_base_02_tabla_med_centrales.png")
+save_kable(tabla_kbl, file = path_tabla_kbl, zoom = 2)
+cat("Se ha generado el fichero: ", path_tabla_kbl, "\n")
+
 
