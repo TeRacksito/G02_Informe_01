@@ -121,15 +121,59 @@ limite_superior <- cuartil_q3 + 1.5 * tabla_med_dispersion$iqr
 
 atipicos_frame <- datos_cloud[datos_cloud$Lat_Base > limite_superior,]
 atipicos_frame <- atipicos_frame[order(atipicos_frame$Lat_Base, decreasing = TRUE), ]
+atipicos_frame_top3 <- head(atipicos_frame, 3)
 
 h("Tres servidores con mayor latencia base")
-print(head(atipicos_frame, 3))
+print(atipicos_frame_top3)
 
 cat0("\nHay varias cosas que podriamos observar.\n")
-cat0("Todos pertenencen al mismo proveedor/región (", as.character(atipicos_frame$Provider[1]),
-     "/", as.character(atipicos_frame$Region[1]),"). Esto podría indicar que existe algún ",
+cat0("Todos pertenencen al mismo proveedor/región (", as.character(atipicos_frame_top3$Provider[1]),
+     "/", as.character(atipicos_frame_top3$Region[1]),"). Esto podría indicar que existe algún ",
      "problema con dicha región.\n")
-cat0("Todos presentan un uso intensivo de CPU (", atipicos_frame$CPU[3],
-     "% - ", atipicos_frame$CPU[1], "%) al momento de registar la latencia. ",
-     "Esto podría indicar colapsos o nodos saturados.")
+cat0("Todos presentan un uso intensivo de CPU (", atipicos_frame_top3$CPU[3],
+     "% - ", atipicos_frame_top3$CPU[1], "%) al momento de registar la latencia. ",
+     "Esto podría indicar colapsos o nodos saturados.\n")
 
+path_tabla_atipicos <- here::here("data", "processed", "latencia_base_03_tabla_atipicos.RData")
+save(atipicos_frame_top3, file = path_tabla_atipicos)
+cat("\nSe ha generado el fichero: ", path_tabla_atipicos, "\n")
+
+# ==== Extra - Comparativa con Lat_Post ====
+h("Comparativa con Latencia Posterior")
+cat0("Hemos visto que efectiamente existe algún problema que crea graves ",
+     "retrasos de latencia. ¿Será que la implementación de caché ",
+     "mitiga el problema?\n")
+
+# análisis descriptivo de Lat_Post
+lat_post <- datos_cloud$Lat_Post
+
+h("Resumen estadístico Lat_Base")
+print(summary(lat_base))
+h("Resumen estadístico Lat_Post")
+print(summary(lat_post))
+
+cat0("\n")
+media_post <- mean(lat_post, na.rm = TRUE)
+cat0("Media: ", media_post, " (ms)\n")
+
+mediana_post <- median(lat_post, na.rm = TRUE)
+cat0("Mediana: ", mediana_post, " (ms)\n")
+
+iqr_post <- IQR(lat_post, na.rm = TRUE)
+cat0("Rango Intercuartílico: ", round(iqr_post, 3), "\n")
+
+max_post <- max(lat_post, na.rm = TRUE)
+cat0("Valor máximo: ", round(max_post, 3), "\n")
+
+perc_mejora_mediana <- ((tabla_med_centrales$mediana - mediana_post) / tabla_med_centrales$mediana) * 100
+perc_mejora_iqr <- ((tabla_med_dispersion$iqr - iqr_post) / tabla_med_dispersion$iqr) * 100
+
+max_base <- max(lat_base, na.rm = TRUE)
+perc_mejora_max <- ((max_base - max_post) / max_base) * 100
+
+cat0("\nLa implementación de la capa de caché en memoria RAM ha reducido el ",
+     "tiempo medio de respuesta de ", round(tabla_med_centrales$mediana, 2), " ms a ",
+     round(mediana_post, 2), " ms; una mejora del ", round(perc_mejora_mediana, 2),
+     "%.\n")
+cat0("Además, se han eliminado en mayor medida los valores atípicos extremos (",
+     round(max_post, 3), " ms frente a ", round(max_base, 3), " ms).\n")
