@@ -35,6 +35,12 @@ source(here("scripts", "Utilidades.R"))
 
 # ==== Script ====
 
+# verificar outputs
+outputs_dir <- here::here("outputs")
+if (!dir.exists(outputs_dir)) {
+  dir.create(outputs_dir, recursive = TRUE, showWarnings = FALSE)
+}
+
 # cargar dataframe `tabla_med_centrales`
 path_tabla_med_centrales <- here::here("data", "processed", "latencia_base_02_tabla_med_centrales.RData")
 if (!file.exists(path_tabla_med_centrales)) {
