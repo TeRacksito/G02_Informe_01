@@ -75,30 +75,41 @@ print(tabla_med_forma)
 # ==== Exportar - Med Tendencia Central ====
 
 colnames(tabla_med_centrales) <- c(
-  "Media Agrupada",
-  "Media",
-  "Mediana",
-  "Moda",
+  "Media Agrupada (ms)",
+  "Media (ms)",
+  "Mediana (ms)",
+  "Moda (ms)",
   "Intervalo Modal"
 )
 
-tabla_kbl <- tabla_med_centrales %>%
-  kbl(
-    caption = "Medidas de Tendencia Central",
-    align = "c",
-    row.names = FALSE,
-    escape = FALSE
-  ) %>%
-  kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed"),
-    full_width = FALSE,
-    position = "center"
-  ) %>%
-  row_spec(0, bold = TRUE, background = "#5C068C", color = "white")
+exportar_tabla(
+  tabla_med_centrales,
+  here::here("outputs", "latencia_base_02_tabla_med_centrales.png"),
+  "Medidas de Tendencia Central"
+)
 
-cat0("\nGuardando resultado PNG, espere un momento...")
-path_tabla_kbl <- here::here("outputs", "latencia_base_02_tabla_med_centrales.png")
-save_kable(tabla_kbl, file = path_tabla_kbl, zoom = 2)
-cat("Se ha generado el fichero: ", path_tabla_kbl, "\n")
+# ==== Exportar - Med Dispersión ====
+
+# finalmente no vamos a incluir las cuasi-
+tabla_med_dispersion$cuasivarianza <- NULL
+tabla_med_dispersion$cuasidesviacion <- NULL
+
+tabla_med_dispersion$cv_pearson <- round(tabla_med_dispersion$cv_pearson * 100, 3)
+
+colnames(tabla_med_dispersion) <- c(
+  "Varianza (S<sup>2</sup>)",
+  "Desv. Típica (S)",
+  "Cv de Pearson (%)",
+  "Rango",
+  "IQR"
+)
+
+exportar_tabla(
+  tabla_med_dispersion,
+  here::here("outputs", "latencia_base_02_tabla_med_dispersion.png"),
+  "Medidas de Dispersión"
+)
+
+
 
 
