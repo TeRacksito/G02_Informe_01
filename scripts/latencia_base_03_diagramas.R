@@ -1,10 +1,10 @@
 # Cabecera =====================================================================
 # Tarea: Analizar Latencia Base
-# Script 02: Medidas descriptivas y estadisticos de Latencia Base.
+# Script 03: Generación de Diagramas.
 # Autor: Angel Krasimirov Stoyanov
 # 
-# Queremos calcular todas las medidas descriptivas posibles de `Lat_Base` 
-# (Latencia Base) y hacer analizar los resultados.
+# Queremos generar diagramas útiles para Lat_Base. Inicialmente: Histograma,
+# Boxplot, Diagrama de frecuencias acumuladas.
 #
 # Entradas esperadas:
 # - data/processed/Cloud_Performance_procesado.RData
