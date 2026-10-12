@@ -13,6 +13,12 @@
 # - data/processed/latencia_base_02_tabla_med_forma.RData
 # 
 # Salidas:
+# - outputs/latencia_base_02_tabla_med_centrales.png
+# - outputs/latencia_base_02_tabla_med_dispersion.png
+# - outputs/latencia_base_02_tabla_cuartiles.png
+# - outputs/latencia_base_02_tabla_deciles.png
+# - outputs/latencia_base_02_tabla_percentiles.png
+# - outputs/latencia_base_02_tabla_med_forma.png
 # ______________________________________________________________________________
 
 rm(list = ls())
