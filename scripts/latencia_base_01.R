@@ -125,3 +125,7 @@ print(tabla_frec_reagr_frame)
 path_processed_tabla <- here::here("data", "processed", "latencia_base_01_tabla_frecuencias.RData")
 save(tabla_frec_reagr_frame, file = path_processed_tabla)
 cat("\nSe ha generado el fichero: ", path_processed_tabla, "\n")
+
+path_vectores_01 <- here::here("data", "processed", "latencia_base_01_vectores_otros.RData")
+save(breaks_reagr, file = path_vectores_01)
+cat("\nSe ha generado el fichero: ", path_vectores_01, "\n")
