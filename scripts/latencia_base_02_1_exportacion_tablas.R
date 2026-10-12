@@ -110,6 +110,63 @@ exportar_tabla(
   "Medidas de Dispersión"
 )
 
+# ==== Exportar - Med Posición ====
 
+cuartiles_frame <- as.data.frame(
+  t(round(cuartiles, 3)),
+  check.names = FALSE
+)
+
+colnames(cuartiles_frame) <- c(
+  "Q<sub>1</sub> (P25)(ms)",
+  "Q<sub>2</sub> (P50)(ms)",
+  "Q<sub>3</sub> (P75)(ms)"
+)
+
+exportar_tabla(
+  cuartiles_frame,
+  here::here("outputs", "latencia_base_02_tabla_cuartiles.png"),
+  "Cuartiles"
+)
+
+deciles_frame <- as.data.frame(
+  t(round(deciles, 3)),
+  check.names = FALSE
+)
+
+colnames(deciles_frame) <- c(
+  "P10 (ms)",
+  "P20 (ms)",
+  "P30 (ms)",
+  "P40 (ms)",
+  "Q<sub>2</sub> (P50)(ms)",
+  "P60 (ms)",
+  "P70 (ms)",
+  "P80 (ms)",
+  "P90 (ms)"
+)
+
+exportar_tabla(
+  deciles_frame,
+  here::here("outputs", "latencia_base_02_tabla_deciles.png"),
+  "Deciles"
+)
+
+percentiles_frame <- as.data.frame(
+  t(round(percentiles_interesantes, 3)),
+  check.names = FALSE
+)
+
+colnames(percentiles_frame) <- c(
+  "P05 (ms)",
+  "P90 (ms)",
+  "P95 (ms)"
+)
+
+exportar_tabla(
+  percentiles_frame,
+  here::here("outputs", "latencia_base_02_tabla_percentiles.png"),
+  "Percentiles Interesantes"
+)
 
 
