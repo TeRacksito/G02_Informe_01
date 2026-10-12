@@ -98,6 +98,7 @@ tabla_med_centrales <- data.frame(
   "media_agrupada" = round(w_media, 3),
   "media" = round(media, 3),
   "mediana" = round(mediana, 3),
+  "moda" = round(modas[1], 3),
   "intervalo_modal" = intervalos_modales[1],
   row.names = ""
 )
@@ -203,7 +204,7 @@ cat0("Sin embargo, también podemos afirmar que se garantiza una latencia ",
      "haber algúna solución a la inestabilidad anterioremente descrita.\n")
 
 path_med_posicion <- here::here("data", "processed", "latencia_base_02_vectores_med_posicion.RData")
-save(cuartiles, deciles, percentiles_interesantes, file = path_med_posicion)
+save(cuartiles, deciles, percentiles_interesantes, percentiles, file = path_med_posicion)
 cat("\nSe ha generado el fichero: ", path_med_posicion, "\n")
 
 # ==== Medidas de forma ====
