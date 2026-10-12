@@ -116,7 +116,7 @@ cat("Se ha generado el fichero: ", path_hist, "\n")
 # ==== Boxplot ====
 
 path_box <- here::here("outputs", "latencia_base_03_boxplot.png")
-png(path_box, width = 850, height = 600, res = 100)
+png(path_box, width = 850, height = 900, res = 100)
 
 boxplot(
   lat_base,
@@ -124,11 +124,25 @@ boxplot(
   border = "#5C068C",
   range = 1.5,
   ylab = "Latencia Base (ms)",
-  main = "Diagrama de Caja y Patillas de Latencia Base"
+  main = "Diagrama de Caja y Patillas de Latencia Base",
+  yaxt = "n"
 )
 
+cuartil_q1 <- cuartiles[["25%"]]
+cuartil_q2 <- cuartiles[["50%"]]
 cuartil_q3 <- cuartiles[["75%"]]
 limite_superior <- cuartil_q3 + 1.5 * tabla_med_dispersion$iqr
+
+axis(side = 2, col = "black")
+
+axis(
+  side = 2,
+  at = c(cuartil_q1, cuartil_q2, cuartil_q3), 
+  labels = round(c(cuartil_q1, cuartil_q2, cuartil_q3), 2), 
+  col.axis = "#5C068C",
+  font = 2,
+  las = 1
+)
 
 abline(h = limite_superior, col = "red", lty = 2, lwd = 2)
 
