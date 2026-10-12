@@ -28,6 +28,13 @@ library(kableExtra)
 source(here("scripts", "Utilidades.R"))
 
 # ==== Script ====
+
+# verificar outputs
+outputs_dir <- here::here("outputs")
+if (!dir.exists(outputs_dir)) {
+  dir.create(outputs_dir, recursive = TRUE, showWarnings = FALSE)
+}
+
 # cargar dataframe `tabla_atipicos`
 path_tabla_atipicos <- here::here("data", "processed", "latencia_base_04_tabla_atipicos.RData")
 if (!file.exists(path_tabla_atipicos)) {

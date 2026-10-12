@@ -26,6 +26,12 @@ source(here("scripts", "Utilidades.R"))
 
 # ==== Script ====
 
+# verificar outputs
+outputs_dir <- here::here("outputs")
+if (!dir.exists(outputs_dir)) {
+  dir.create(outputs_dir, recursive = TRUE, showWarnings = FALSE)
+}
+
 path_tabla <- here::here("data", "processed", "latencia_base_01_tabla_frecuencias.RData")
 if (!file.exists(path_tabla)) {
   stop(paste("ERROR: Se esperaba:", path_tabla))
