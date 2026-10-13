@@ -83,7 +83,9 @@ cat0("32 son demasiadas clases, 11 parece un número razonable.\n\n")
 ## @knitr agrupacion_03
 
 amplitud <- (rango_vals[2] - rango_vals[1]) / k_sturges
-breaks <- seq(rango_vals[1], rango_vals[2], by = amplitud)
+# Usar by = amplitud genera problemas de precisión de coma flotante.
+# breaks <- seq(rango_vals[1], rango_vals[2], by = amplitud)
+breaks <- seq(rango_vals[1], rango_vals[2], length.out = k_sturges + 1)
 
 cat0("Número de intervalos elegido (k): ", k_sturges, "\n")
 cat0("Amplitud de intervalo (c): ", round(amplitud, 4), "\n")
