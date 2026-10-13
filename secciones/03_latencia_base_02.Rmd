@@ -1,0 +1,106 @@
+```{r setup-03-02, include=FALSE}
+knitr::read_chunk(here::here("scripts", "latencia_base_02_medidas_y_estadisticos.R"))
+```
+
+```{r dependecias, include=FALSE, eval=TRUE}
+```
+
+### Medidas Descriptivas
+
+Una vez tenemos la tabla de frecuencia, sería pertinente realizar las distintas medidas descriptivas para tener una mejor visión del conjunto de datos.
+
+#### Medidas de Tendencia Central
+
+Estas medidas nos permiten conocer los valores alrededor de los cuales se concentran los datos.
+
+```{r med_central_01, echo=TRUE, eval=FALSE}
+```
+```{r med_central_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+Las observaciones se concentran alrededor de los `` `r round(media, 2)` `` ms de latencia base.
+
+Sin embargo, hemos obtenido una serie de modas. Esto es porque carece de sentido estadístico calcular las modas de una variable continua sin agrupar.
+
+Es más apropiado calcular el intervalo modal e interpolar geográficamente la moda.
+
+```{r med_central_02, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r med_central_03, echo=TRUE, eval=FALSE}
+```
+```{r med_central_03, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r med_central_04, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r child = '03_latencia_base_02_1_exportacion.Rmd', envir = new.env()}
+```
+
+Podemos observar que la media (`` `r tabla_med_centrales$media` ms``) es sensiblemente mayor que el bloque central (`` `r tabla_med_centrales$mediana` ms - `r tabla_med_centrales$moda` ms``). Podemos intuir que existe una cola, una tendencia a la derecha, que empuja y desplaza la media; pero es necesario realizar más medidas.
+
+#### Medidas de Dispersión
+
+Nos permiten conocer la distribución de los datos respecto a las tendencias centrales.
+
+```{r med_dispersion_01, echo=TRUE, eval=FALSE}
+```
+```{r med_dispersion_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+El coeficiente de variación de Pearson es mayor de `30%` (`` `r cv_pearson_perc`% ``) lo cual **indica que la media (`` `r tabla_med_centrales$media` ms``) no es representativa de los datos**. Es recomendable utilizar, por ejemplo, la mediana (`` `r tabla_med_centrales$mediana` ms``) como indicador robusto.
+
+Además, podemos ver que el rango intercuartílico (`` `r round(rango_iqr, 3)` ``) es sensiblemente más pequeño que el rango de la muestra (`` `r round(rango, 3)` ``). Esto significa que el `50%` de las observaciones recaen en unos valores muy juntos; haciendo ver que el resto de valores se dispersan mucho. Podemos pensar que la distribución será leptocúrtica respecto a la distribución normal; pero podemos confirmar esto mediante las medidas de forma que haremos más adelante.
+
+Podemos empezar a sospechar de que existen valores atípicos, dado que sospechamos de una cola o tendencia por la derecha, y que además la mayoría de datos se concentran en un pequeño rango.
+
+```{r med_dispersion_02, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r child = '03_latencia_base_02_2_exportacion.Rmd', envir = new.env()}
+```
+
+#### Medidas de Posición
+
+Estas medidas ayudan a tener una mejor idea de las frecuencias en umbrales concretos de la distribución.
+
+```{r med_posicion_01, echo=TRUE, eval=FALSE}
+```
+```{r med_posicion_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r med_posicion_02, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+De nuevo, observamos una larga cola por la derecha. Resulta interesante plantearse que esta cola (``P95 (`r round(percentiles[["95%"]], 1)` ms) - P99 (`r round(percentiles[["99%"]], 1)` ms)``) representa las latencias más lentas. Es decir, las peores experiencias de usuario respecto a la respuesta de los servidores.
+
+Más concretamente, podemos afirmar que el `4%` de los peores casos presenta una gran variabilidad frente a la tendencia central. Es decir, que existen valores atípicos. Si tomamos en cuenta el contexto, significa que antes de implementar la cache en memoria, se producían inestabilidades puntuales en la latencia y, por ende, en la experiencia de usuario. Por ello, sería interesante realizar una comparativa, más adelante.
+
+Sin embargo, también podemos afirmar que se garantiza una latencia inferior (estable) a `` `r round(percentiles_interesantes[2], 1)` ms`` para el `90%` de las conexiones; indicando una buena estabilidad en caso de obviar los valores atípicos.
+
+```{r child = '03_latencia_base_02_3_exportacion.Rmd', envir = new.env()}
+```
+
+#### Medidas de Forma
+
+Finalmente, estas medidas nos ayudarán a confirmar nuestras sospechas acerca de la forma general que produce o aparenta está distribución de datos.
+
+```{r med_forma_01, echo=TRUE, eval=FALSE}
+```
+```{r med_forma_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r med_forma_02, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+El Coeficiente de asimetría de Fisher es positivo (`` `r round(asimetria, 3)` > 0``), lo cual indica que, efectivamente, existe una asimetría o sesgo a la derecha. Confirma nuestras sospechas iniciales.
+
+El Coeficiente de Curtosis es positivo (`` `r round(curtosis, 3)` > 0``, lo cual indica que la distribución es más apuntada que la distribución normal. Es decir, que es Leptocúrtica; lo cual confirma nuestra sospecha inicial.
+
+```{r child = '03_latencia_base_02_4_exportacion.Rmd', envir = new.env()}
+```
+
+#### Scripts originales de análisis.
+
+Estos son los scripts originales que se usaron para realizar este análisis estadístico.
+
+```{r, code=readLines(here::here("scripts", "latencia_base_02_medidas_y_estadisticos.R")), eval=FALSE, class.source="fold-hide"}
+```
+
+```{r, code=readLines(here::here("scripts", "latencia_base_02_1_exportacion_tablas.R")), eval=FALSE, class.source="fold-hide"}
+```

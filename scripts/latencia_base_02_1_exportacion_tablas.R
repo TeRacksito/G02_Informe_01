@@ -23,6 +23,7 @@
 
 rm(list = ls())
 
+## @knitr dependencias
 # ==== Librerías ====
 
 library(here)
@@ -85,8 +86,11 @@ h("Tabla de medidas de forma")
 print(tabla_med_forma)
 
 # ==== Exportar - Med Tendencia Central ====
+## @knitr exportar_med_centrales
 
-colnames(tabla_med_centrales) <- c(
+tabla_kbl <- tabla_med_centrales
+
+colnames(tabla_kbl) <- c(
   "Media Agrupada (ms)",
   "Media (ms)",
   "Mediana (ms)",
@@ -94,13 +98,14 @@ colnames(tabla_med_centrales) <- c(
   "Intervalo Modal"
 )
 
-exportar_tabla(
-  tabla_med_centrales,
+tabla_kbl <- exportar_tabla(
+  tabla_kbl,
   here::here("outputs", "latencia_base_02_tabla_med_centrales.png"),
   "Medidas de Tendencia Central"
 )
 
 # ==== Exportar - Med Dispersión ====
+## @knitr exportar_med_dispersion
 
 # finalmente no vamos a incluir las cuasi-
 tabla_med_dispersion$cuasivarianza <- NULL
@@ -108,7 +113,9 @@ tabla_med_dispersion$cuasidesviacion <- NULL
 
 tabla_med_dispersion$cv_pearson <- round(tabla_med_dispersion$cv_pearson * 100, 3)
 
-colnames(tabla_med_dispersion) <- c(
+tabla_kbl <- tabla_med_dispersion
+
+colnames(tabla_kbl) <- c(
   "Varianza (S<sup>2</sup>)",
   "Desv. Típica (S)",
   "Cv de Pearson (%)",
@@ -116,13 +123,14 @@ colnames(tabla_med_dispersion) <- c(
   "IQR"
 )
 
-exportar_tabla(
-  tabla_med_dispersion,
+tabla_kbl <- exportar_tabla(
+  tabla_kbl,
   here::here("outputs", "latencia_base_02_tabla_med_dispersion.png"),
   "Medidas de Dispersión"
 )
 
 # ==== Exportar - Med Posición ====
+## @knitr exportar_med_posicion_01
 
 cuartiles_frame <- as.data.frame(
   t(round(cuartiles, 3)),
@@ -135,11 +143,13 @@ colnames(cuartiles_frame) <- c(
   "Q<sub>3</sub> (P75)(ms)"
 )
 
-exportar_tabla(
+tabla_kbl <- exportar_tabla(
   cuartiles_frame,
   here::here("outputs", "latencia_base_02_tabla_cuartiles.png"),
   "Cuartiles"
 )
+
+## @knitr exportar_med_posicion_02
 
 deciles_frame <- as.data.frame(
   t(round(deciles, 3)),
@@ -158,11 +168,13 @@ colnames(deciles_frame) <- c(
   "P90 (ms)"
 )
 
-exportar_tabla(
+tabla_kbl <- exportar_tabla(
   deciles_frame,
   here::here("outputs", "latencia_base_02_tabla_deciles.png"),
   "Deciles"
 )
+
+## @knitr exportar_med_posicion_03
 
 percentiles_frame <- as.data.frame(
   t(round(percentiles_interesantes, 3)),
@@ -175,21 +187,24 @@ colnames(percentiles_frame) <- c(
   "P95 (ms)"
 )
 
-exportar_tabla(
+tabla_kbl <- exportar_tabla(
   percentiles_frame,
   here::here("outputs", "latencia_base_02_tabla_percentiles.png"),
   "Percentiles Interesantes"
 )
 
 # ==== Exportar - Med Forma ====
+## @knitr exportar_med_forma
 
-colnames(tabla_med_forma) <- c(
+tabla_kbl <- tabla_med_forma
+
+colnames(tabla_kbl) <- c(
   "Asimetría (A<sub>F</sub>)",
   "Curtosis (g<sub>2</sub>)"
 )
 
-exportar_tabla(
-  tabla_med_forma,
+tabla_kbl <- exportar_tabla(
+  tabla_kbl,
   here::here("outputs", "latencia_base_02_tabla_med_forma.png"),
   "Medidas de Forma"
 )

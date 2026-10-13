@@ -1,0 +1,97 @@
+---
+title: "Informe de Análisis de Rendimiento de Infraestructura Cloud"
+subtitle: "Grado en Ingeniería Informática - Universidad de La Laguna"
+author: "Grupo 02 - Turno de mañana"
+date: "`r Sys.Date()`"
+output: 
+  bookdown::html_document2:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    number_sections: true
+    theme: flatly
+    highlight: tango
+    code_folding: show
+lang: es
+---
+
+```{=html}
+<style>
+.figure .caption, figcaption, p.caption, caption {
+  font-weight: bold !important;
+  font-size: 1.15em !important;
+  color: #333333 !important;
+  text-align: center !important;
+}
+
+table, table.table, .main-container table {
+  border-collapse: collapse !important;
+  width: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-bottom: 1.5rem !important;
+  font-size: 0.9em !important;
+  border: 1px solid #dddddd !important;
+}
+
+table th, table td, .main-container table th, .main-container table td {
+  border: 1px solid #dddddd !important;
+  text-align: center !important;
+  padding: 8px 12px !important;
+}
+
+tr:nth-child(even) {
+  background-color: #F4ECF7 !important;
+}
+
+th {
+  background-color: #5C068C !important
+  color: white !important;
+}
+</style>
+<script>
+$(document).ready(function () {
+  $('.fold-hide').closest('.collapse').collapse('hide');
+});
+</script>
+```
+
+```{r setup, include=FALSE}
+# Configuración global de bloques de código
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 8,
+  fig.height = 5,
+  fig.align = "center"
+)
+
+library(knitr)
+library(kableExtra)
+library(here)
+library(pandoc)
+```
+
+# Introducción y Objetivos
+
+Este documento recoge el **Análisis Exploratorio de Datos (AED)** sobre el conjunto de datos de rendimiento `Cloud_Performance_01.csv`.
+
+---
+
+# Análisis Exploratorio por Variables
+
+```{r child = 'secciones/01_eficiencia.Rmd', envir = new.env()}
+```
+
+```{r child = 'secciones/02_rps.Rmd', envir = new.env()}
+```
+
+```{r child = 'secciones/03_latencia_base.Rmd', envir = new.env()}
+```
+
+---
+
+# Conclusiones Globales
