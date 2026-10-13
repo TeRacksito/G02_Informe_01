@@ -1,0 +1,79 @@
+```{r setup-03-01, include=FALSE}
+knitr::read_chunk(here::here("scripts", "latencia_base_01.R"))
+```
+
+```{r dependecias, include=FALSE, eval=TRUE}
+```
+
+### Tabla de Frecuencias
+
+Para realizar el análisis exploratorio de esta variable, primero hemos comprobado su continuidad y su número de valores únicos; en pos de decidir si se requiere discretización o agrupación.
+
+```{r informacion_base_01, echo=TRUE, eval=FALSE}
+```
+```{r informacion_base_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+El `` `r round((n_unicos / n_muestra) * 100, 1)`% `` de la muestra presenta valores únicos; donde la muestra tiene `` `r n_muestra` `` observaciones. Evidentemente, no es factible discretizar esta variable. Todo lo contrario, es necesario
+realizar una agrupación por intervalos.
+
+Para realizar una agrupación, necesitamos primero decidir cuantos intervalos son deseables; en función del tamaño de la muestra.
+
+```{r agrupacion_01, echo=TRUE, eval=FALSE}
+```
+```{r agrupacion_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+Realizando el cálculo mediante la raíz del tamaño muestral obtenemos `` `r k_raiz` `` intervalos. Es una cantidad considerable. Por otro lado, mediante el método de Sturges obtenemos `` `r k_sturges` ``; que se presenta como una cantidad más razonable.
+
+Calculamos la amplitud y los límites de cada intervalo.
+
+```{r agrupacion_03, echo=TRUE, eval=FALSE}
+```
+```{r agrupacion_03, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+Con ello, podemos generar una primera aproximación de tabla de frecuencias.
+
+```{r tabla_frec_01, echo=TRUE, eval=FALSE}
+```
+```{r tabla_frec_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r tabla_frec_01_local, echo=FALSE}
+exportar_tabla(
+  tabla = tabla_frecuencias,
+  caption = "Tabla de Frecuencias"
+)
+```
+
+Como podemos observar, hay varios intervalos que tienen una frecuencia absoluta menor de cinco. Sería pertinente realizar una fusión o reagrupación de estos intervalos.
+
+```{r tabla_frec_03, echo=TRUE, eval=FALSE}
+```
+```{r tabla_frec_03, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r tabla_frec_04, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+Esto provocará que las amplitudes no sean homogéneas entre intervalos, por lo que sería deseable añadir las marcas de clase, las amplitudes y las alturas a la tabla de frecuencias.
+
+```{r tabla_frec_05, echo=TRUE, eval=FALSE}
+```
+```{r tabla_frec_05, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r tabla_frec_06, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r child = '03_latencia_base_01_1_exportacion.Rmd', envir = new.env()}
+```
+
+Vemos que ahora si todos los intervalos contienen al menos cinco observaciones.
+
+#### Scripts originales de análisis.
+
+Estos son los scripts originales que se usaron para realizar este análisis estadístico.
+
+```{r, code=readLines(here::here("scripts", "latencia_base_01.R")), eval=FALSE, class.source="fold-hide"}
+```
+
+```{r, code=readLines(here::here("scripts", "latencia_base_01_1_exportacion.R")), eval=FALSE, class.source="fold-hide"}
+```

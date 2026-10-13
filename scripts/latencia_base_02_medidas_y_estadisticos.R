@@ -19,6 +19,7 @@
 
 rm(list = ls())
 
+## @knitr dependecias
 # ==== Librerías ====
 
 library(here)
@@ -62,6 +63,8 @@ print(summary(lat_base))
 # ==== Medidas de tendencia central ====
 h("Medidas de tendencia central")
 
+## @knitr med_central_01
+
 w_media <- weighted.mean(tabla_frec$m_i, tabla_frec$f_i)
 cat0("Media Agrupada: ", w_media, " (ms)\n")
 
@@ -74,6 +77,8 @@ cat0("Mediana: ", mediana, " (ms)\n")
 modas <- DescTools::Mode(lat_base, na.rm = TRUE)
 cat("Modas:", modas, " (ms)\n")
 
+## @knitr med_central_02
+
 cat0("\nComo podemos ver, hay muchas modas, porque calcular la moda de una ",
      "variable continua sin agrupar no teine mucho sentido estadistico.\n",
      "Calculemos la moda de los intervalos de la distribución.\n\n")
@@ -81,15 +86,39 @@ cat0("\nComo podemos ver, hay muchas modas, porque calcular la moda de una ",
 # si usamos which.max no tendríamos en cuenta múltiples intervalos modales.
 # Aunque en este caso no ocurre, prefiero intentar hacerlo bien.
 
+## @knitr med_central_03
+
 max_h <- max(tabla_frec$h_i)
 
 indices_modales <- which(tabla_frec$h_i == max_h)
+
+modas_interpolacion <- numeric(length(indices_modales))
+
+for (k in seq_along(indices_modales)) {
+  idx <- indices_modales[k]
+  
+  h_i <- tabla_frec$h_i[idx]
+  
+  h_ant <- if (idx == 1) 0 else tabla_frec$h_i[idx - 1]
+  h_pos <- if (idx == nrow(tabla_frec)) 0 else tabla_frec$h_i[idx + 1]
+  
+  delta_1 <- h_i - h_ant
+  delta_2 <- h_i - h_pos
+  
+  c_i <- tabla_frec$c_i[idx]
+  a_i <- tabla_frec$m_i[idx] - (c_i / 2)
+  
+  modas_interpolacion[k] <- a_i + c_i * (delta_1 / (delta_1 + delta_2))
+}
 
 intervalos_modales <- tabla_frec$intervalo[indices_modales]
 clases_modales <- tabla_frec$m_i[indices_modales]
 
 cat("Intervalos modales:", paste(intervalos_modales, collapse = " y "), "\n")
+cat("Modas:", paste(modas_interpolacion, collapse = " y "), "(ms)\n")
 cat("Modas (m_i):", paste(clases_modales, collapse = " y "), "(ms)\n")
+
+## @knitr med_central_04
 
 # Ojo, hay que buscar la moda exacta, haciendo un cálculo de interpolación lineal dentro del intervalo modal.
 
@@ -100,7 +129,7 @@ tabla_med_centrales <- data.frame(
   "media_agrupada" = round(w_media, 3),
   "media" = round(media, 3),
   "mediana" = round(mediana, 3),
-  "moda" = round(modas[1], 3),
+  "moda" = round(modas_interpolacion[1], 3),
   "intervalo_modal" = intervalos_modales[1],
   row.names = ""
 )
@@ -114,6 +143,8 @@ cat("\nSe ha generado el fichero: ", path_tabla_med_centrales, "\n")
 
 # ==== Medidas de dispersión ====
 h("Medidas de dispersión")
+
+## @knitr med_dispersion_01
 
 n_muestra <- length(lat_base)
 
@@ -135,6 +166,8 @@ cat0("Rango: ", round(rango, 3), "\n")
 
 rango_iqr <- IQR(lat_base, na.rm = TRUE)
 cat0("Rango Intercuartílico: ", round(rango_iqr, 3), "\n")
+
+## @knitr med_dispersion_02
 
 h("Observaciones")
 cat0("El coeficiente de variación es mayor del 30% ",
@@ -168,6 +201,8 @@ cat("\nSe ha generado el fichero: ", path_tabla_med_dispersion, "\n")
 # ==== Medidas de posición ====
 h("Medidas de posición")
 
+## @knitr med_posicion_01
+
 cuartiles <- quantile(lat_base, seq(0.25, 0.75, by = 0.25), na.rm = TRUE)
 cat0("Cuartiles:\n")
 print(round(cuartiles, 3))
@@ -179,6 +214,8 @@ print(round(deciles, 3))
 percentiles_interesantes <- quantile(lat_base, c(0.05, 0.90, 0.95), na.rm = TRUE)
 cat0("\nPercentiles (P5, P90, P95):\n")
 print(round(percentiles_interesantes, 3))
+
+## @knitr med_posicion_02
 
 percentiles <- quantile(lat_base, seq(0.01, 0.99, by = 0.01), na.rm = TRUE)
 cat0("\nPercentiles (Todos):\n")
@@ -212,11 +249,15 @@ cat("\nSe ha generado el fichero: ", path_med_posicion, "\n")
 # ==== Medidas de forma ====
 h("Medidas de forma")
 
+## @knitr med_forma_01
+
 asimetria <- e1071::skewness(lat_base, na.rm = TRUE, type = 3)
 cat0("Coeficiente de Asimetría de Fisher: ", round(asimetria, 3), "\n")
 
 curtosis <- kurtosis(lat_base, na.rm = TRUE, type = 3)
 cat0("Coeficiente de Curtosis: ", round(curtosis, 3), "\n")
+
+## @knitr med_forma_02
 
 h("Observaciones")
 cat0("El Coeficiente de asimetría de Fisher es positivo (",

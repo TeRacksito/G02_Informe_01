@@ -11,3 +11,5 @@ renv/python/
 
 /data/
 /outputs/
+
+**.html

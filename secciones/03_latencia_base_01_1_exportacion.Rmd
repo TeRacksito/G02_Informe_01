@@ -1,0 +1,12 @@
+```{r setup-03-01_1, include=FALSE}
+knitr::read_chunk(here::here("scripts", "latencia_base_01_1_exportacion.R"))
+```
+
+```{r dependecias, include=FALSE, eval=TRUE}
+```
+
+```{r exportar_tabla, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r exportar_tabla_local, echo=FALSE, eval=TRUE, results='hold'}
+tabla_kbl
+```

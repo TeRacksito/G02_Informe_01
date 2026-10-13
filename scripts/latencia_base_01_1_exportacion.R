@@ -14,6 +14,7 @@
 
 rm(list = ls())
 
+## @knitr dependecias
 # ==== Librerías ====
 
 library(here)
@@ -42,20 +43,22 @@ print(tabla_frec_reagr_frame)
 
 # ==== Tabla estilizada ====
 
+tabla_frec_reagr_frame <- tabla_frec_reagr_frame[, c(1, 7, 8, 2, 3, 6, 4, 5, 9)]
+
 colnames(tabla_frec_reagr_frame) <- c(
-  "intervalo",
-  "n<sub>i</sub>",
-  "f<sub>i</sub>",
-  "N<sub>i</sub>",
-  "F<sub>i</sub>",
-  "%<sub>i</sub>",
+  "Intervalo",
   "m<sub>i</sub>",
   "c<sub>i</sub>",
+  "n<sub>i</sub>",
+  "f<sub>i</sub>",
+  "%<sub>i</sub>",
+  "N<sub>i</sub>",
+  "F<sub>i</sub>",
   "h<sub>i</sub>"
-  )
-
-exportar_tabla(
+)
+## @knitr exportar_tabla
+tabla_kbl <- exportar_tabla(
   tabla_frec_reagr_frame,
   here::here("outputs", "latencia_base_01_tabla_frecuencias.png"),
-  "Distribución de Frecuencias de 'Latencia Base'"
+  "Tabla de Frecuencias de 'Latencia Base'"
 )

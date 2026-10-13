@@ -15,6 +15,7 @@ Existe una estructura convencional que debe respetar en mayor medida.
   - `data/raw/`: Datos en bruto, **TAL Y COMO SE OBTUVIERON DE LA FUENTE**.
   - `data/processed/`: Datos procesados, listos para análisis. Normalmente, la modificación de estos datos **NUNCA SE REALIZA MANUALMENTE**.
 - `scripts/`: Archivos `.R` con código que realiza el análisis.
+- `secciones/`: Archivos `.Rmd`, partes del informe final, que pueden incluir código y resultados.
 - `outputs/`: (local) Archivos generados por los scripts, como gráficos, tablas, etc
 - `renv`: Directorio que contiene el entorno de R utilizado en este proyecto.
 

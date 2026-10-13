@@ -2,13 +2,13 @@
 # Tarea: Analizar Latencia Base
 # Script 01: Analizar la variable continua. Tabla de frecuencias.
 # Autor: Angel Krasimirov Stoyanov
-# 
+#
 # Queremos analizar, hacer una primera aproximación a, la variable continua
 # `Lat_Base` (Latencia Base). Generar la tabla de frecuencias.
 #
 # Entradas esperadas:
 # - data/processed/Cloud_Performance_procesado.RData
-# 
+#
 # Salidas:
 # - data/processed/latencia_base_01_tabla_frecuencias.RData
 # ______________________________________________________________________________
@@ -16,6 +16,7 @@
 
 rm(list = ls())
 
+## @knitr dependecias
 # ==== Librerías ====
 
 library(here)
@@ -30,7 +31,7 @@ source(here("scripts", "Utilidades.R"))
 # cargar dataframe datos_cloud
 path_datos <- here::here("data", "processed", "Cloud_Performance_procesado.RData")
 if (!file.exists(path_datos)) {
-  stop(paste("ERROR: Se esperaba:", path_datos))
+     stop(paste("ERROR: Se esperaba:", path_datos))
 }
 load(path_datos)
 
@@ -42,56 +43,77 @@ lat_base <- datos_cloud$Lat_Base
 # ==== Información Base ====
 h("Información Base")
 
+## @knitr informacion_base_01
 cat0("Tipo de variable asignado: ", class(lat_base), " (variable continua)", "\n")
 cat0("Unidad: Milisegundos (ms)", "\n")
 
-n_muestra <- length(lat_base)
+n_muestra <- length(na.omit(lat_base))
 cat0("Tamaño muestral (n): ", n_muestra, "\n")
 
 n_unicos <- length(unique(lat_base))
-cat0("Número de valores distintos: ", n_unicos, " (",(n_unicos / n_muestra) * 100, "% del total)\n")
+cat0("Número de valores distintos: ", n_unicos, " (", (n_unicos / n_muestra) * 100, "% del total)\n")
 
-rango_vals <- range(lat_base)
+rango_vals <- range(lat_base, na.rm = TRUE)
 cat0("Rango de valores observados: [", rango_vals[1], " (ms), ", rango_vals[2], " (ms)]\n")
 
+## @knitr informacion_base_02
+
 h("Conclusión inicial")
-cat0("La variable Latencia Base tiene un número de valores (únicos) ",
+cat0(
+     "La variable Latencia Base tiene un número de valores (únicos) ",
      "considerable. No es factible la discretización. Es necesario realizar ",
-     "un agrupamiento.\n")
+     "un agrupamiento.\n"
+)
 
 # ==== Agrupación ====
 h("Agrupación")
 
-k_raiz <- round(sqrt(length(lat_base)), 0)
+## @knitr agrupacion_01
+
+k_raiz <- round(sqrt(n_muestra), 0)
 k_sturges <- nclass.Sturges(lat_base)
 
 cat0("Número de clases (raíz): ", k_raiz, "\n")
 cat0("Número de clases (Sturges): ", k_sturges, "\n")
+
+## @knitr agrupacion_02
+
 cat0("32 son demasiadas clases, 11 parece un número razonable.\n\n")
 
+## @knitr agrupacion_03
+
 amplitud <- (rango_vals[2] - rango_vals[1]) / k_sturges
-breaks <- seq(rango_vals[1], rango_vals[2], by=amplitud)
+breaks <- seq(rango_vals[1], rango_vals[2], by = amplitud)
 
 cat0("Número de intervalos elegido (k): ", k_sturges, "\n")
 cat0("Amplitud de intervalo (c): ", round(amplitud, 4), "\n")
 cat("Límites de intervalos:", breaks, "\n")
 
+## @knitr agrupacion_04
 # ==== Tablas de frecuencias ====
 
+## @knitr tabla_frec_01
+
 tabla_frecuencias <- DescTools::Freq(lat_base, breaks = breaks, include.lowest = TRUE)
-# colnames(tabla_frecuencias) <- c("intervalo", "n_i", "f_i", "N_i", "F_i")
+
+## @knitr tabla_frec_02
 
 h("Tabla de frecuencias - Propuesta 1")
 print(tabla_frecuencias)
 
 # ==== Tabla de frecuencias - Propuesta 2.1 ====
 
-cat0("\nComo podemos observar, existen varios intervalos (6-11) que tienen ",
+cat0(
+     "\nComo podemos observar, existen varios intervalos (6-11) que tienen ",
      "menos de cinco observaciones. Sería pertinente realizar una fusión ",
-     "de dichos intervalos.\n")
+     "de dichos intervalos.\n"
+)
 
+## @knitr tabla_frec_03
 
-breaks_reagr <-c(breaks[1:6], max(lat_base))
+breaks_reagr <- c(breaks[1:6], max(lat_base, na.rm = TRUE))
+
+## @knitr tabla_frec_04
 
 tabla_frec_reagrupada <- DescTools::Freq(lat_base, breaks = breaks_reagr, include.lowest = TRUE)
 
@@ -100,8 +122,12 @@ print(tabla_frec_reagrupada)
 
 # ==== Tabla de frecuencias - Propuesta 2.2 ====
 
-cat0("\nPuesto que ahora la amplitud no es homogénea, tendría sentido ",
-     "representar las marcas de clase, las amplitudes y las alturas.\n")
+cat0(
+     "\nPuesto que ahora la amplitud no es homogénea, tendría sentido ",
+     "representar las marcas de clase, las amplitudes y las alturas.\n"
+)
+
+## @knitr tabla_frec_05
 
 tabla_frec_reagr_frame <- as.data.frame(tabla_frec_reagrupada)
 
@@ -118,6 +144,8 @@ a_sup <- breaks_reagr[2:length(breaks_reagr)] # vector: limites superiores
 tabla_frec_reagr_frame$m_i <- round((a_inf + a_sup) / 2, 3)
 tabla_frec_reagr_frame$c_i <- round(a_sup - a_inf, 3)
 tabla_frec_reagr_frame$h_i <- round(tabla_frec_reagr_frame$n_i / tabla_frec_reagr_frame$c_i, 3)
+
+## @knitr tabla_frec_06
 
 h("Tabla de frecuencias - Propuesta 2.2")
 print(tabla_frec_reagr_frame)
