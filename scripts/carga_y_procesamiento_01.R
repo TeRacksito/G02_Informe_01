@@ -2,13 +2,13 @@
 # Tarea: Cargar y Procesamiento
 # Script 01: carga y definición inicial de tipos de variables
 # Autor: Angel Krasimirov Stoyanov
-# 
+#
 # Este script tiene como objeto exportar un RData para ser utilizado en los
 # posteriores análisis.
 #
 # Entradas esperadas:
 # - data/raw/Cloud_Performance_01.csv
-# 
+#
 # Salidas:
 # - data/processed/Cloud_Performance_procesado.RData
 # ______________________________________________________________________________
@@ -50,29 +50,35 @@ str(datos_cloud)
 # No es una variable estadística.
 datos_cloud$ID <- as.character(datos_cloud$ID)
 
-# RPS: Peticiones por segundo 
+# RPS: Peticiones por segundo
 # Variable Cuantitativa Discreta
 datos_cloud$RPS <- as.numeric(datos_cloud$RPS)
+datos_cloud$RPS[datos_cloud$RPS < 0] <- NA
 
 # CPU: Porcentaje de uso de procesador
 # Variable Cuantitativa Continua
 datos_cloud$CPU <- as.numeric(datos_cloud$CPU)
+datos_cloud$CPU[datos_cloud$CPU < 0] <- NA
 
 # Lat_Base: Latencia previa a la caché en ms
 # Variable Cuantitativa Continua
 datos_cloud$Lat_Base <- as.numeric(datos_cloud$Lat_Base)
+datos_cloud$Lat_Base[datos_cloud$Lat_Base < 0] <- NA
 
 # Lat_Post: Latencia posterior a la caché en ms
 # Variable Cuantitativa Continua
 datos_cloud$Lat_Post <- as.numeric(datos_cloud$Lat_Post)
+datos_cloud$Lat_Post[datos_cloud$Lat_Post < 0] <- NA
 
 # Bandwidth: Ancho de banda de red en Mbps
 # Variable Cuantitativa Continua
 datos_cloud$Bandwidth <- as.numeric(datos_cloud$Bandwidth)
+datos_cloud$Bandwidth[datos_cloud$Bandwidth < 0] <- NA
 
-# Containers: Conteo de microservicios 
+# Containers: Conteo de microservicios
 # Variable Cuantitativa Discreta
 datos_cloud$Containers <- as.numeric(datos_cloud$Containers)
+datos_cloud$Containers[datos_cloud$Containers < 0] <- NA
 
 # ==== Atributos Ordinales ====
 # Restarts: Número de caídas/reinicios
@@ -103,7 +109,7 @@ datos_cloud$Provider <- factor(
   levels = c("AWS", "Azure", "GCP")
 )
 
-# Region: Ubicación geográfica 
+# Region: Ubicación geográfica
 # Atributo nominal (Asia-Pacific, EU-West, US-East)
 datos_cloud$Region <- factor(
   datos_cloud$Region,
