@@ -1,0 +1,53 @@
+```{r setup-03-03, include=FALSE}
+knitr::read_chunk(here::here("scripts", "latencia_base_03_diagramas.R"))
+```
+
+```{r dependencias, include=FALSE, eval=TRUE}
+```
+
+### Diagramas
+
+Para visualizar mejor los datos que hemos obtenido, y por tanto entender mejor la variable continua Latencia Base, es imprescindible generar y observar ciertos diagramas.
+
+Sin embargo, antes de pasar a ver los diagramas, sería interesante mencionar la ausencia de alguno de estos.
+
+**¿Por qué no representar un gráfico de sectores o un diagrama de barras?** Ninguno de estos es adecuado cuando trabajamos con variables continuas. Por un lado, el gráfico de sectores no aportaría ninguna información ante una variable continua agrupada con, además, un amplio rango de valores. Por otro lado, El diagrama de barras o `Barplot` es ideal para representar variables discretas o atributos cualitativos, pero no es preciso utilizarlo cuando la variable es continua; pues, dejaría espacios en blanco entre rectángulos.
+
+#### Histograma
+
+Una vez dicho eso, observemos el Histograma a continuación. Ahora tenemos una idea más visual de la tendencia o sesgo a la derecha de la distribución de datos. Además, la densidad de frecuencia del ultimo intervalo es extremadamente bajo; coincidiendo con las conclusiones que hemos desarrollado acerca de los valores atípicos.
+
+La línea vertical discontinua que se puede observar es la moda; que calculamos anteriormente mediante una interpolación geométrica.
+
+También, podemos coincidir visualmente la idea de que la distribución es Leptocúrtica; bastante apuntalada alrededor de su moda.
+
+```{r mostrar_histograma_local, echo=FALSE, fig.align='center'}
+knitr::include_graphics(here::here("outputs", "latencia_base_03_histograma_poligono.png"))
+```
+
+#### Diagrama de Caja y Patillas
+
+Observemos ahora el diagrama de caja y patillas o `Boxplot`. Ahora es completamente evidente que existen valores atípicos.
+
+La línea roja horizontal discontinua es una ayuda visual para remarcar aún más el límite superior (`` `r round(limite_superior, 2)` ms``), a partir del cual consideramos los valores como atípicos; remarcados con pequeños círculos. Asimismo, podemos observar en la parte inferior izquierda la mediana, y los cuartiles superior e inferior.
+
+También, podemos ver que el rectángulo central o caja es bastante pequeño, lo cual concuerda con la observación del rango intercuartilico y el coeficiente de Curtosis.
+
+```{r mostrar_boxplot_local, echo=FALSE, fig.align='center'}
+knitr::include_graphics(here::here("outputs", "latencia_base_03_boxplot.png"))
+```
+
+#### Polígono de Frecuencias Acumuladas
+
+Aunque ya hemos hecho una serie considerable de observaciones, el diagrama de frecuencias acumuladas puede ser otra forma visual de observar, por ejemplo, que en la cola derecha la frecuencia decae.
+
+```{r mostrar_cumfreq_local, echo=FALSE, fig.align='center'}
+knitr::include_graphics(here::here("outputs", "latencia_base_03_cumfreq.png"))
+```
+
+#### Scripts originales de análisis.
+
+Estos son los scripts originales que se usaron para realizar este análisis estadístico.
+
+```{r, code=readLines(here::here("scripts", "latencia_base_03_diagramas.R")), eval=FALSE, class.source="fold-hide"}
+```

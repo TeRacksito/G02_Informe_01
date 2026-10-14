@@ -2,7 +2,7 @@
 # Tarea: Analizar Latencia Base
 # Script 03: Generación de Diagramas.
 # Autor: Angel Krasimirov Stoyanov
-# 
+#
 # Queremos generar diagramas útiles para Lat_Base. Inicialmente: Histograma,
 # Boxplot, Diagrama de frecuencias acumuladas.
 #
@@ -12,7 +12,7 @@
 # - data/processed/latencia_base_01_vectores_otros.RData
 # - data/processed/latencia_base_02_tabla_med_dispersion.RData
 # - data/processed/latencia_base_02_vectores_med_posicion.RData
-# 
+#
 # Salidas:
 # - outputs/latencia_base_03_histograma_poligono.png
 # - outputs/latencia_base_03_boxplot.png
@@ -21,6 +21,7 @@
 
 rm(list = ls())
 
+## @knitr dependencias
 # ==== Librerías ====
 
 library(here)
@@ -64,6 +65,16 @@ if (!file.exists(path_vectores)) {
 load(path_vectores)
 
 cat("\nCortes de Intervalos: ", breaks_reagr, "\n")
+
+# cargar dataframe `tabla_med_centrales`
+path_tabla_med_centrales <- here::here("data", "processed", "latencia_base_02_tabla_med_centrales.RData")
+if (!file.exists(path_tabla_med_centrales)) {
+  stop(paste("ERROR: Se esperaba:", path_tabla_med_centrales))
+}
+load(path_tabla_med_centrales)
+
+h("Tabla de medidas de Tendencia Central")
+print(tabla_med_centrales)
 
 # cargar dataframe `tabla_med_dispersion`
 path_tabla_med_dispersion <- here::here("data", "processed", "latencia_base_02_tabla_med_dispersion.RData")
@@ -109,6 +120,14 @@ x <- c(min(breaks_reagr), h$mids, max(breaks_reagr))
 y <- c(0, h$density, 0)
 
 lines(x, y, col = "#5C068C", lwd = 2.5, type = "b", pch = 19)
+
+abline(
+  v = tabla_med_centrales$moda,
+  col = "#5C068C",
+  lwd = 1,
+  lty = 2
+)
+
 axis(side = 1, at = round(breaks_reagr, 1))
 dev.off()
 cat("Se ha generado el fichero: ", path_hist, "\n")
@@ -137,8 +156,8 @@ axis(side = 2, col = "black")
 
 axis(
   side = 2,
-  at = c(cuartil_q1, cuartil_q2, cuartil_q3), 
-  labels = round(c(cuartil_q1, cuartil_q2, cuartil_q3), 2), 
+  at = c(cuartil_q1, cuartil_q2, cuartil_q3),
+  labels = round(c(cuartil_q1, cuartil_q2, cuartil_q3), 2),
   col.axis = "#5C068C",
   font = 2,
   las = 1
@@ -165,7 +184,7 @@ plot(
   pch = 19,
   col = "#5C068C",
   lwd = 2.5,
-  main = "Polígono de Frecuencias Acumuladas",
+  main = "Polígono de Frecuencias Acumuladas de Latencia Base",
   xlab = "Límites Superiores de Clase (ms)",
   ylab = "Frecuencia Absoluta Acumulada"
 )
@@ -175,3 +194,4 @@ axis(side = 2, at = y)
 
 dev.off()
 cat("Se ha generado el fichero: ", path_cumfreq, "\n")
+## @knitr fin

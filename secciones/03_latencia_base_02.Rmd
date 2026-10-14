@@ -2,7 +2,7 @@
 knitr::read_chunk(here::here("scripts", "latencia_base_02_medidas_y_estadisticos.R"))
 ```
 
-```{r dependecias, include=FALSE, eval=TRUE}
+```{r dependencias, include=FALSE, eval=TRUE}
 ```
 
 ### Medidas Descriptivas

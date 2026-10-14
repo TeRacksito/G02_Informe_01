@@ -2,7 +2,7 @@
 knitr::read_chunk(here::here("scripts", "latencia_base_02_1_exportacion_tablas.R"))
 ```
 
-```{r dependecias, include=FALSE, eval=TRUE}
+```{r dependencias, include=FALSE, eval=TRUE}
 ```
 
 ```{r exportar_med_posicion_01, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}

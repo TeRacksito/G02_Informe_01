@@ -15,6 +15,7 @@
 
 rm(list = ls())
 
+## @knitr dependencias
 # ==== Librerías ====
 
 library(here)
@@ -44,6 +45,8 @@ datos_cloud <- datos_raw
 
 h("dataframe en bruto")
 str(datos_cloud)
+
+## @knitr definicion_continuas_discretas
 
 # ==== Variables Discretas y Continuas ====
 # ID: Cadena alfanumérica única
@@ -80,6 +83,8 @@ datos_cloud$Bandwidth[datos_cloud$Bandwidth < 0] <- NA
 datos_cloud$Containers <- as.numeric(datos_cloud$Containers)
 datos_cloud$Containers[datos_cloud$Containers < 0] <- NA
 
+## @knitr definicion_ordinales_nominales
+
 # ==== Atributos Ordinales ====
 # Restarts: Número de caídas/reinicios
 # Atributo ordinal (0 < 1 < 2)
@@ -100,6 +105,7 @@ datos_cloud$Efficiency <- factor(
   ordered = TRUE
 )
 
+## @knitr definicion_nominales
 
 # ==== Atributos Nominales ====
 # Provider: Proveedor cloud
@@ -115,6 +121,8 @@ datos_cloud$Region <- factor(
   datos_cloud$Region,
   levels = c("Asia-Pacific", "EU-West", "US-East")
 )
+
+## @knitr fin
 
 # ==== Guardar dataframe ====
 h("dataframe")

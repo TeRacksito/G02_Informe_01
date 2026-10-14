@@ -2,7 +2,7 @@
 # Tarea: Analizar Latencia Base
 # Script 04_1: Exportar tablas estilizadas.
 # Autor: Angel Krasimirov Stoyanov
-# 
+#
 # Intentar exportar png estilizado de las tablas que genera el script
 # `latencia_base_04_cuestiones.R`.
 #
@@ -17,6 +17,7 @@
 
 rm(list = ls())
 
+## @knitr dependencias
 # ==== Librerías ====
 
 library(here)
@@ -51,13 +52,17 @@ load(path_tabla_comparacion)
 
 # ==== Exportar - Tabla de valores atípicos ====
 
-exportar_tabla(
+## @knitr exportar_tabla_atipicos
+
+tabla_kbl <- exportar_tabla(
   atipicos_frame_top3,
   here::here("outputs", "latencia_base_04_tabla_atipicos.png"),
-  "Tabla de valores atípicos de Latencia Base (Top 3)."
+  "Tabla de los tres valores atípicos más extremos de Latencia Base"
 )
 
 # ==== Exportar - Tabla de comparación ====
+
+## @knitr exportar_tabla_comparacion
 
 colnames(tabla_comparacion) <- c(
   "Métrica",
@@ -66,8 +71,8 @@ colnames(tabla_comparacion) <- c(
   "Mejora (%)"
 )
 
-exportar_tabla(
+tabla_kbl <- exportar_tabla(
   tabla_comparacion,
   here::here("outputs", "latencia_base_04_tabla_comparacion.png"),
-  "Tabla de comparación de Latencia Base."
+  "Tabla de comparación de Latencia Base con Latencia Posterior"
 )

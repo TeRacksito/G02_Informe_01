@@ -2,7 +2,7 @@
 # Tarea: Analizar Latencia Base
 # Script 04: Responder cuestiones extra.
 # Autor: Angel Krasimirov Stoyanov
-# 
+#
 # Queremos responder a las cuestiones:
 #   3.c: ¿Qué porcentaje es superior a 36.56?
 #   3.d: ¿Hay valores atípicos? ¿Los 3 valores más extremos?
@@ -12,7 +12,7 @@
 # - data/processed/latencia_base_02_tabla_med_centrales.RData
 # - data/processed/latencia_base_02_tabla_med_dispersion.RData
 # - data/processed/latencia_base_02_vectores_med_posicion.RData
-# 
+#
 # Salidas:
 # - data/processed/latencia_base_04_tabla_atipicos.RData
 # - data/processed/latencia_base_04_tabla_comparacion.RData
@@ -20,6 +20,7 @@
 
 rm(list = ls())
 
+## @knitr dependencias
 # ==== Librerías ====
 
 library(here)
@@ -35,11 +36,11 @@ source(here("scripts", "Utilidades.R"))
 # cargar dataframe datos_cloud
 path_datos <- here::here("data", "processed", "Cloud_Performance_procesado.RData")
 if (!file.exists(path_datos)) {
-  stop(paste("ERROR: Se esperaba:", path_datos))
+     stop(paste("ERROR: Se esperaba:", path_datos))
 }
 load(path_datos)
 lat_base <- datos_cloud$Lat_Base
-n_muestra <- length(lat_base)
+n_muestra <- length(na.omit(lat_base))
 
 h("Dataframe")
 str(datos_cloud)
@@ -47,7 +48,7 @@ str(datos_cloud)
 # cargar dataframe `tabla_med_centrales`
 path_tabla_med_centrales <- here::here("data", "processed", "latencia_base_02_tabla_med_centrales.RData")
 if (!file.exists(path_tabla_med_centrales)) {
-  stop(paste("ERROR: Se esperaba:", path_tabla_med_centrales))
+     stop(paste("ERROR: Se esperaba:", path_tabla_med_centrales))
 }
 load(path_tabla_med_centrales)
 
@@ -57,7 +58,7 @@ print(tabla_med_centrales)
 # cargar dataframe `tabla_med_dispersion`
 path_tabla_med_dispersion <- here::here("data", "processed", "latencia_base_02_tabla_med_dispersion.RData")
 if (!file.exists(path_tabla_med_dispersion)) {
-  stop(paste("ERROR: Se esperaba:", path_tabla_med_dispersion))
+     stop(paste("ERROR: Se esperaba:", path_tabla_med_dispersion))
 }
 load(path_tabla_med_dispersion)
 
@@ -67,7 +68,7 @@ print(tabla_med_dispersion)
 # cargar vectores `cuartiles`, `deciles`, `percentiles_interesantes` y `percentiles`
 path_med_posicion <- here::here("data", "processed", "latencia_base_02_vectores_med_posicion.RData")
 if (!file.exists(path_med_posicion)) {
-  stop(paste("ERROR: Se esperaba:", path_med_posicion))
+     stop(paste("ERROR: Se esperaba:", path_med_posicion))
 }
 load(path_med_posicion)
 cat0("\nCuartiles:\n")
@@ -82,59 +83,84 @@ print(round(percentiles_interesantes, 3))
 h("Cuestión 3.c")
 cat0("¿Porcentaje de Lat_Base > 36.56 ms?\n\n")
 
-cat0("Si nos fijamos en el diagrama de caja y patillas, el valor 36.56 ",
+cat0(
+     "Si nos fijamos en el diagrama de caja y patillas, el valor 36.56 ",
      "coincide con el cuartil superior (Q3). Por ende, es trivial saber ",
      "que el 25% (1 - 0,75) de los servidores presentan una latencia base ",
-     "superior a 36.56 ms.\n\n")
+     "superior a 36.56 ms.\n\n"
+)
 
 cat0("De todas formas, veamos como se calcula, para conocer el porcentaje exacto.\n\n")
 
+## @knitr cuestion_3_c_01
+
 umbral <- 36.56
 
-n_cumplen <- sum(lat_base > umbral)
+n_cumplen <- sum(lat_base > umbral, na.rm = TRUE)
 perc_cumplen <- (n_cumplen / n_muestra) * 100
 
 cat0("Valor umbral: ", umbral, " (ms)\n")
 cat0("Número de servidores: ", n_cumplen, " sobre ", n_muestra, "\n")
 cat0("Porcentaje: ", perc_cumplen, "%\n")
 
+## @knitr cuestion_3_c_02
+
 # ==== Cuestión 3.d ====
 
 h("Cuestión 3.d")
 cat0("¿Hay valores atípicos? ¿Cúales son los 3 valores más extremos?\n\n")
 
-cat0("Al observar el diagrama de caja y patillas, nos damos cuenta ",
-     "inmediatamente que existe una serie de valores atípicos.\n")
+cat0(
+     "Al observar el diagrama de caja y patillas, nos damos cuenta ",
+     "inmediatamente que existe una serie de valores atípicos.\n"
+)
+
+## @knitr cuestion_3_d_01
 
 vector_outliers <- DescTools::Outlier(lat_base, method = "boxplot", value = TRUE, na.rm = TRUE)
 n_outliers <- length(vector_outliers)
+top_3 <- head(sort(vector_outliers, decreasing = TRUE), 3)
 
-cat0("Número de valores atípicos: ", n_outliers, " sobre ", n_muestra, " (",
-     round((n_outliers / n_muestra) * 100, 2), "%)\n")
-cat("3 Valores más extremos: ", paste(head(sort(vector_outliers, decreasing = TRUE), 3)), "\n")
+cat0(
+     "Número de valores atípicos: ", n_outliers, " sobre ", n_muestra, " (",
+     round((n_outliers / n_muestra) * 100, 2), "%)\n"
+)
+cat("3 Valores más extremos: ", paste(top_3), "\n")
 
-cat0("\nEncuentro interesante poder saber toda la información acerca de esos ",
-     "tres servidores. Para ello sería más conveniente filtrar el dataframe.\n")
+## @knitr cuestion_3_d_02
+
+cat0(
+     "\nEncuentro interesante poder saber toda la información acerca de esos ",
+     "tres servidores. Para ello sería más conveniente filtrar el dataframe.\n"
+)
+
+## @knitr cuestion_3_d_03
 
 cuartil_q1 <- cuartiles[["25%"]]
 cuartil_q2 <- cuartiles[["50%"]]
 cuartil_q3 <- cuartiles[["75%"]]
 limite_superior <- cuartil_q3 + 1.5 * tabla_med_dispersion$iqr
 
-atipicos_frame <- datos_cloud[datos_cloud$Lat_Base > limite_superior,]
+atipicos_frame <- datos_cloud[datos_cloud$Lat_Base > limite_superior, ]
 atipicos_frame <- atipicos_frame[order(atipicos_frame$Lat_Base, decreasing = TRUE), ]
 atipicos_frame_top3 <- head(atipicos_frame, 3)
+
+## @knitr cuestion_3_d_04
 
 h("Tres servidores con mayor latencia base")
 print(atipicos_frame_top3)
 
 cat0("\nHay varias cosas que podriamos observar.\n")
-cat0("Todos pertenencen al mismo proveedor/región (", as.character(atipicos_frame_top3$Provider[1]),
-     "/", as.character(atipicos_frame_top3$Region[1]),"). Esto podría indicar que existe algún ",
-     "problema con dicha región.\n")
-cat0("Todos presentan un uso intensivo de CPU (", atipicos_frame_top3$CPU[3],
+cat0(
+     "Todos pertenencen al mismo proveedor/región (", as.character(atipicos_frame_top3$Provider[1]),
+     "/", as.character(atipicos_frame_top3$Region[1]), "). Esto podría indicar que existe algún ",
+     "problema con dicha región.\n"
+)
+cat0(
+     "Todos presentan un uso intensivo de CPU (", atipicos_frame_top3$CPU[3],
      "% - ", atipicos_frame_top3$CPU[1], "%) al momento de registar la latencia. ",
-     "Esto podría indicar colapsos o nodos saturados.\n")
+     "Esto podría indicar colapsos o nodos saturados.\n"
+)
 
 path_tabla_atipicos <- here::here("data", "processed", "latencia_base_04_tabla_atipicos.RData")
 save(atipicos_frame_top3, file = path_tabla_atipicos)
@@ -142,11 +168,14 @@ cat("\nSe ha generado el fichero: ", path_tabla_atipicos, "\n")
 
 # ==== Extra - Comparativa con Lat_Post ====
 h("Comparativa con Latencia Posterior")
-cat0("Hemos visto que efectiamente existe algún problema que crea graves ",
+cat0(
+     "Hemos visto que efectiamente existe algún problema que crea graves ",
      "retrasos de latencia. ¿Será que la implementación de caché ",
-     "mitiga el problema?\n")
+     "mitiga el problema?\n"
+)
 
 # análisis descriptivo de Lat_Post
+## @knitr cuestion_extra_01_01
 lat_post <- datos_cloud$Lat_Post
 
 h("Resumen estadístico Lat_Base")
@@ -167,6 +196,8 @@ cat0("Rango Intercuartílico: ", round(iqr_post, 3), "\n")
 max_post <- max(lat_post, na.rm = TRUE)
 cat0("Valor máximo: ", round(max_post, 3), "\n")
 
+## @knitr cuestion_extra_01_02
+
 perc_mejora_media <- ((tabla_med_centrales$media - media_post) / tabla_med_centrales$media) * 100
 perc_mejora_mediana <- ((tabla_med_centrales$mediana - mediana_post) / tabla_med_centrales$mediana) * 100
 perc_mejora_iqr <- ((tabla_med_dispersion$iqr - iqr_post) / tabla_med_dispersion$iqr) * 100
@@ -174,24 +205,37 @@ perc_mejora_iqr <- ((tabla_med_dispersion$iqr - iqr_post) / tabla_med_dispersion
 max_base <- max(lat_base, na.rm = TRUE)
 perc_mejora_max <- ((max_base - max_post) / max_base) * 100
 
-cat0("\nLa implementación de la capa de caché en memoria RAM ha reducido el ",
+cat0("Mejora de la media: ", round(perc_mejora_media, 2), "%\n")
+cat0("Mejora de la mediana: ", round(perc_mejora_mediana, 2), "%\n")
+cat0("Mejora del IQR: ", round(perc_mejora_iqr, 2), "%\n")
+cat0("Mejora del valor máximo: ", round(perc_mejora_max, 2), "%\n")
+
+## @knitr cuestion_extra_01_03
+
+cat0(
+     "\nLa implementación de la capa de caché en memoria RAM ha reducido el ",
      "tiempo medio de respuesta de ", round(tabla_med_centrales$mediana, 2), " ms a ",
      round(mediana_post, 2), " ms; una mejora del ", round(perc_mejora_mediana, 2),
-     "%.\n")
-cat0("Además, se han eliminado en mayor medida los valores atípicos extremos (",
-     round(max_post, 3), " ms frente a ", round(max_base, 3), " ms).\n")
+     "%.\n"
+)
+cat0(
+     "Además, se han eliminado en mayor medida los valores atípicos extremos (",
+     round(max_post, 3), " ms frente a ", round(max_base, 3), " ms).\n"
+)
+
+
 
 tabla_comparacion <- data.frame(
-  metrica = c("Media (ms)", "Mediana (ms)", "IQR (ms)", "Máximo (ms)"),
-  lat_base = c(round(tabla_med_centrales$media, 2), round(tabla_med_centrales$mediana, 2), round(tabla_med_dispersion$iqr, 2), round(max_base, 2)),
-  lat_post = c(round(media_post, 2), round(mediana_post, 2), round(iqr_post, 2), round(max_post, 2)),
-  mejora = c(
-    paste0(round(perc_mejora_media, 1), "%"),
-    paste0(round(perc_mejora_mediana, 1), "%"),
-    paste0(round(perc_mejora_iqr, 1), "%"),
-    paste0(round(perc_mejora_max, 1), "%")
-  ),
-  check.names = FALSE
+     metrica = c("Media (ms)", "Mediana (ms)", "IQR (ms)", "Máximo (ms)"),
+     lat_base = c(round(tabla_med_centrales$media, 2), round(tabla_med_centrales$mediana, 2), round(tabla_med_dispersion$iqr, 2), round(max_base, 2)),
+     lat_post = c(round(media_post, 2), round(mediana_post, 2), round(iqr_post, 2), round(max_post, 2)),
+     mejora = c(
+          paste0(round(perc_mejora_media, 1), "%"),
+          paste0(round(perc_mejora_mediana, 1), "%"),
+          paste0(round(perc_mejora_iqr, 1), "%"),
+          paste0(round(perc_mejora_max, 1), "%")
+     ),
+     check.names = FALSE
 )
 
 path_tabla_comparacion <- here::here("data", "processed", "latencia_base_04_tabla_comparacion.RData")

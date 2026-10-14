@@ -1,0 +1,95 @@
+```{r setup-03-04, include=FALSE}
+knitr::read_chunk(here::here("scripts", "latencia_base_04_cuestiones.R"))
+```
+
+```{r dependencias, include=FALSE, eval=TRUE}
+```
+
+### Cuestiones
+
+Vamos a responder algunas cuestiones especificas acerca de la variable Latencia Base.
+
+#### Cuestión 3.c
+
+**¿Qué porcentaje de servidores tiene una latencia superior a `36.56 ms`?**
+
+Este valor coincide casi a la perfección con el cuartil superior (`` `r round(cuartiles[["75%"]], 2)` ``). Por ende, es trivial pensar que la respuesta será aproximadamente un `25%` (`1 - 0.75 = 0.25`); suposición a la cual podemos llegar cómodamente observando el Histograma.
+
+Aunque evidentemente la pregunta señala observar el Histograma, tampoco sería de más intentar calcular un valor más preciso.
+
+```{r cuestion_3_c_01, echo=TRUE, eval=FALSE}
+```
+```{r cuestion_3_c_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+Un `` `r perc_cumplen`% `` de servidores tienen una latencia superior a `` `r umbral` ms``.
+
+#### Cuestión 3.d
+
+**¿Hay valores atípicos? ¿Cuáles son los tres valores más extremos?**
+
+Es una cuestión que hemos ido respondiendo a lo largo del análisis. Efectivamente, existen valores atípicos.
+
+```{r cuestion_3_c_02, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r cuestion_3_d_01, echo=TRUE, eval=FALSE}
+```
+```{r cuestion_3_d_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+Concretamente, hay `` `r n_outliers` `` valores atípicos. El valor más extremo es de `` `r top_3[1]` ms``, seguido de `` `r top_3[2]` ms`` y `` `r top_3[3]` ms``.
+
+Aunque la cuestión está respondida, encuentro mucho más interesante saber cuales son esos valores atípicos en su totalidad, no solo su latencia base.
+
+Para ello, podemos filtrar los datos.
+
+```{r cuestion_3_d_02, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r cuestion_3_d_03, echo=TRUE, eval=FALSE}
+```
+```{r cuestion_3_d_03, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r cuestion_3_d_04, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r child = '03_latencia_base_04_1_exportacion.Rmd', envir = new.env()}
+```
+
+Podemos hacer algunas observaciones adicionales, ahora que vemos los valores al completo.
+
+Primero, todos pertenecen al mismo proveedor/región (`` `r as.character(atipicos_frame_top3$Provider[1])` / `r as.character(atipicos_frame_top3$Region[1])` ``). Esto podría indicar que existe algún problema con dicha región.
+
+Segundo, todos presentan un uso intensivo de CPU (`` `r atipicos_frame_top3$CPU[3]`% - `r atipicos_frame_top3$CPU[1]`% ``) al momento de registrar la latencia. Esto podría indicar colapsos o nodos (de servidores) saturados.
+
+#### Análisis extra. Comparación Latencia Base y Latencia Posterior
+
+Sería interesante plantear una cuestión extra. Recordemos que uno de los aspectos más importantes de estos datos es que comparan un mismo aspecto antes y después de una mejora crítica. Entonces, sería interesante plantearse, ¿dicha mejora, la implementación de caché a nivel de memoria RAM, ha dado resultados positivos?
+
+Sin entrar en un análisis profundo de la variable continua `Lat_Post`, podemos intentar observar en esta los mismos problemas que ya hemos descubierto en `Lat_Base`. De esta forma, si los problemas persisten, entonces podemos pensar a priori que la mejora no ha sido efectiva.
+
+```{r cuestion_extra_01_01, echo=TRUE, eval=FALSE}
+```
+```{r cuestion_extra_01_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+A simple ojo, ya podemos observar ciertos cambios significativos, pero sería mejor incluso calcular los porcentajes de mejora respecto a la variable `Lat_Base`.
+
+```{r cuestion_extra_01_02, echo=TRUE, eval=FALSE}
+```
+```{r cuestion_extra_01_02, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r cuestion_extra_01_03, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+Ahora es mucho más evidente: la mejora es significativa. Notese que lo que aquí se considera mejora es que los valores (ya sean medianas, o rangos) sean más pequeños. Porque siempre interesa que la latencia sea lo más baja y estable posible.
+
+```{r child = '03_latencia_base_04_2_exportacion.Rmd', envir = new.env()}
+```
+
+#### Scripts originales de análisis.
+
+Estos son los scripts originales que se usaron para realizar este análisis estadístico.
+
+```{r, code=readLines(here::here("scripts", "latencia_base_04_cuestiones.R")), eval=FALSE, class.source="fold-hide"}
+```
+```{r, code=readLines(here::here("scripts", "latencia_base_04_1_exportacion_tablas.R")), eval=FALSE, class.source="fold-hide"}
+```

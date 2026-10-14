@@ -2,19 +2,19 @@
 # Tarea: Analizar Latencia Base
 # Script 01_1: Exportar tabla de frecuencias estilizada
 # Autor: Angel Krasimirov Stoyanov
-# 
+#
 # Intentar exportar png estilizado de la tabla de frecuencias.
 #
 # Entradas esperadas:
 # - data/processed/latencia_base_01_tabla_frecuencias.RData
-# 
+#
 # Salidas:
 # - outputs/latencia_base_01_tabla_frecuencias.png
 # ______________________________________________________________________________
 
 rm(list = ls())
 
-## @knitr dependecias
+## @knitr dependencias
 # ==== Librerías ====
 
 library(here)
