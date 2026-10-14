@@ -17,6 +17,8 @@ Además, vamos a realizar una normalización para magnitudes físicas.
 
 ```{r definicion_continuas_discretas, echo=TRUE, eval=FALSE}
 ```
+```{r definicion_continuas_discretas, echo=FALSE, eval=TRUE, results='hide'}
+```
 
 ### Atributos Ordinales
 
@@ -26,6 +28,8 @@ Aunque no sea estrictamente necesario, definir los `levels` en los atributos ofr
 
 ```{r definicion_ordinales_nominales, echo=TRUE, eval=FALSE}
 ```
+```{r definicion_ordinales_nominales, echo=FALSE, eval=TRUE, results='hide'}
+```
 
 ### Atributos Nominales
 
@@ -33,7 +37,9 @@ Estos atributos no poseen orden, pero siguen siendo un `factor`, sin `levels`.
 
 ```{r definicion_nominales, echo=TRUE, eval=FALSE}
 ```
-```{r fin, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```{r definicion_nominales, echo=FALSE, eval=TRUE, results='hide'}
+```
+```{r fin, include=FALSE, echo=FALSE, eval=TRUE, results='hide'}
 ```
 
 ### Scripts originales de análisis.
