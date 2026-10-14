@@ -16,7 +16,7 @@
 
 rm(list = ls())
 
-## @knitr dependecias
+## @knitr dependencias
 # ==== Librerías ====
 
 library(here)
@@ -50,7 +50,7 @@ cat0("Unidad: Milisegundos (ms)", "\n")
 n_muestra <- length(na.omit(lat_base))
 cat0("Tamaño muestral (n): ", n_muestra, "\n")
 
-n_unicos <- length(unique(lat_base))
+n_unicos <- length(unique(na.omit(lat_base)))
 cat0("Número de valores distintos: ", n_unicos, " (", (n_unicos / n_muestra) * 100, "% del total)\n")
 
 rango_vals <- range(lat_base, na.rm = TRUE)

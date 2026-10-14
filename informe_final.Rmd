@@ -79,9 +79,15 @@ library(pandoc)
 
 Este documento recoge el **Análisis Exploratorio de Datos (AED)** sobre el conjunto de datos de rendimiento `Cloud_Performance_01.csv`.
 
+```{r child = 'secciones/00_descripcion_datos.Rmd', envir = new.env()}
+```
+
 ---
 
 # Análisis Exploratorio por Variables
+
+A continuación se presentan los análisis exploratorio-descriptivos de cada una de las variables de interés; desde el punto 
+de vista de los requisitos del informe.
 
 ```{r child = 'secciones/01_eficiencia.Rmd', envir = new.env()}
 ```

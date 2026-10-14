@@ -1,9 +1,15 @@
 ## Análisis de la Latencia Base (`Lat_Base`)
 
-La **variable continua** `Lat_Base` mide una mágnitud física: El tiempo de respuesta inicial de los servidores; en milisegundos (ms). Recibe el nombre de Latencia Base. "*base*" porque existe otra variable, `Lat_Post`, que mide el mismo tiempo de respuesta, pero tras haber implementado una capa de caché en memoria principal; a modo de mejora.
+La **variable continua** `Lat_Base` mide una magnitud física: **El tiempo de respuesta inicial de los servidores**; en milisegundos (ms). Recibe el nombre de Latencia Base. "*base*" porque existe otra variable, `Lat_Post`, que mide el mismo tiempo de respuesta, pero tras haber **implementado una capa de caché en memoria principal**; a modo de mejora.
 
 ```{r child = '03_latencia_base_01.Rmd', envir = new.env()}
 ```
 
 ```{r child = '03_latencia_base_02.Rmd', envir = new.env()}
+```
+
+```{r child = '03_latencia_base_03.Rmd', envir = new.env()}
+```
+
+```{r child = '03_latencia_base_04.Rmd', envir = new.env()}
 ```

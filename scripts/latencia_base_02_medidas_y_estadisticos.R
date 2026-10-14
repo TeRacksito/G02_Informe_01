@@ -2,14 +2,14 @@
 # Tarea: Analizar Latencia Base
 # Script 02: Medidas descriptivas y estadisticos de Latencia Base.
 # Autor: Angel Krasimirov Stoyanov
-# 
-# Queremos calcular todas las medidas descriptivas posibles de `Lat_Base` 
+#
+# Queremos calcular todas las medidas descriptivas posibles de `Lat_Base`
 # (Latencia Base) y hacer analizar los resultados.
 #
 # Entradas esperadas:
 # - data/processed/Cloud_Performance_procesado.RData
 # - data/processed/latencia_base_01_tabla_frecuencias.RData
-# 
+#
 # Salidas:
 # - data/processed/latencia_base_02_tabla_med_centrales.RData
 # - data/processed/latencia_base_02_tabla_med_dispersion.RData
@@ -19,7 +19,7 @@
 
 rm(list = ls())
 
-## @knitr dependecias
+## @knitr dependencias
 # ==== Librerías ====
 
 library(here)
@@ -35,14 +35,14 @@ source(here("scripts", "Utilidades.R"))
 # cargar dataframe datos_cloud
 path_datos <- here::here("data", "processed", "Cloud_Performance_procesado.RData")
 if (!file.exists(path_datos)) {
-  stop(paste("ERROR: Se esperaba:", path_datos))
+     stop(paste("ERROR: Se esperaba:", path_datos))
 }
 load(path_datos)
 
 # cargar dataframe tabla_frec (tabla_frec_reagr_frame)
 path_tabla_frec <- here::here("data", "processed", "latencia_base_01_tabla_frecuencias.RData")
 if (!file.exists(path_datos)) {
-  stop(paste("ERROR: Se esperaba:", path_tabla_frec))
+     stop(paste("ERROR: Se esperaba:", path_tabla_frec))
 }
 load(path_tabla_frec)
 tabla_frec <- tabla_frec_reagr_frame
@@ -79,9 +79,11 @@ cat("Modas:", modas, " (ms)\n")
 
 ## @knitr med_central_02
 
-cat0("\nComo podemos ver, hay muchas modas, porque calcular la moda de una ",
+cat0(
+     "\nComo podemos ver, hay muchas modas, porque calcular la moda de una ",
      "variable continua sin agrupar no teine mucho sentido estadistico.\n",
-     "Calculemos la moda de los intervalos de la distribución.\n\n")
+     "Calculemos la moda de los intervalos de la distribución.\n\n"
+)
 
 # si usamos which.max no tendríamos en cuenta múltiples intervalos modales.
 # Aunque en este caso no ocurre, prefiero intentar hacerlo bien.
@@ -95,20 +97,20 @@ indices_modales <- which(tabla_frec$h_i == max_h)
 modas_interpolacion <- numeric(length(indices_modales))
 
 for (k in seq_along(indices_modales)) {
-  idx <- indices_modales[k]
-  
-  h_i <- tabla_frec$h_i[idx]
-  
-  h_ant <- if (idx == 1) 0 else tabla_frec$h_i[idx - 1]
-  h_pos <- if (idx == nrow(tabla_frec)) 0 else tabla_frec$h_i[idx + 1]
-  
-  delta_1 <- h_i - h_ant
-  delta_2 <- h_i - h_pos
-  
-  c_i <- tabla_frec$c_i[idx]
-  a_i <- tabla_frec$m_i[idx] - (c_i / 2)
-  
-  modas_interpolacion[k] <- a_i + c_i * (delta_1 / (delta_1 + delta_2))
+     idx <- indices_modales[k]
+
+     h_i <- tabla_frec$h_i[idx]
+
+     h_ant <- if (idx == 1) 0 else tabla_frec$h_i[idx - 1]
+     h_pos <- if (idx == nrow(tabla_frec)) 0 else tabla_frec$h_i[idx + 1]
+
+     delta_1 <- h_i - h_ant
+     delta_2 <- h_i - h_pos
+
+     c_i <- tabla_frec$c_i[idx]
+     a_i <- tabla_frec$m_i[idx] - (c_i / 2)
+
+     modas_interpolacion[k] <- a_i + c_i * (delta_1 / (delta_1 + delta_2))
 }
 
 intervalos_modales <- tabla_frec$intervalo[indices_modales]
@@ -126,12 +128,12 @@ h("Observaciones")
 cat0("Solo tenemos un intervalo modal. Es decir, Unimodal.\n")
 
 tabla_med_centrales <- data.frame(
-  "media_agrupada" = round(w_media, 3),
-  "media" = round(media, 3),
-  "mediana" = round(mediana, 3),
-  "moda" = round(modas_interpolacion[1], 3),
-  "intervalo_modal" = intervalos_modales[1],
-  row.names = ""
+     "media_agrupada" = round(w_media, 3),
+     "media" = round(media, 3),
+     "mediana" = round(mediana, 3),
+     "moda" = round(modas_interpolacion[1], 3),
+     "intervalo_modal" = intervalos_modales[1],
+     row.names = ""
 )
 
 h("Tabla de medidas de tendencia central")
@@ -146,13 +148,13 @@ h("Medidas de dispersión")
 
 ## @knitr med_dispersion_01
 
-n_muestra <- length(lat_base)
+n_muestra <- length(na.omit(lat_base))
 
 cuasivarianza <- var(lat_base, na.rm = TRUE)
 cuasidesviacion <- sd(lat_base, na.rm = TRUE)
 
 varianza <- cuasivarianza * (n_muestra - 1) / n_muestra
-cat0("Varianza: ",  round(varianza, 3), "\n")
+cat0("Varianza: ", round(varianza, 3), "\n")
 
 desviacion <- sqrt(varianza)
 cat0("Desviación estándar: ", round(desviacion, 3), "\n")
@@ -170,25 +172,29 @@ cat0("Rango Intercuartílico: ", round(rango_iqr, 3), "\n")
 ## @knitr med_dispersion_02
 
 h("Observaciones")
-cat0("El coeficiente de variación es mayor del 30% ",
+cat0(
+     "El coeficiente de variación es mayor del 30% ",
      "(", cv_pearson_perc, "% > 30%). Esto indica que la media (",
      round(media, 3), " (ms)) no es representativa.\n",
      "Es recomendable utilizar la mediana (",
-     round(mediana, 3), " (ms)) como indicador robusto.\n\n")
+     round(mediana, 3), " (ms)) como indicador robusto.\n\n"
+)
 
-cat0("El rango intercuartílico es sensiblemente más pequeño (",
+cat0(
+     "El rango intercuartílico es sensiblemente más pequeño (",
      round(rango_iqr, 3), ") que el rango de la muestra (",
      round(rango, 3), "). Esto significa que el 50% de las observaciones ",
-     "recaen un unos valores muy juntos.\n")
+     "recaen un unos valores muy juntos.\n"
+)
 
 tabla_med_dispersion <- data.frame(
-  "cuasivarianza" = round(cuasivarianza, 3),
-  "cuasidesviacion" = round(cuasidesviacion, 3),
-  "varianza" = round(varianza, 3),
-  "desviacion" = round(desviacion, 3),
-  "cv_pearson" = round(cv_pearson, 3),
-  "rango" = round(rango, 3),
-  "iqr" = round(rango_iqr, 3)
+     "cuasivarianza" = round(cuasivarianza, 3),
+     "cuasidesviacion" = round(cuasidesviacion, 3),
+     "varianza" = round(varianza, 3),
+     "desviacion" = round(desviacion, 3),
+     "cv_pearson" = round(cv_pearson, 3),
+     "rango" = round(rango, 3),
+     "iqr" = round(rango_iqr, 3)
 )
 
 h("Tabla de medidas de dispersión")
@@ -224,23 +230,29 @@ print(round(percentiles, 3))
 h("Observaciones")
 cat0("Efectivamente, el 50% concuerda con la mediana: ", round(mediana, 3), "\n\n")
 
-cat0("Observamos una larga cola por la derecha. Tenemos que pensar que esta ",
+cat0(
+     "Observamos una larga cola por la derecha. Tenemos que pensar que esta ",
      "cola (P95 a P99) representa las latencias más lentas. Es decir, ",
-     "las peores experiencias de usuario.\n\n")
+     "las peores experiencias de usuario.\n\n"
+)
 
-cat0("Podemos afirmar que el 4% de los peores casos presenta una gran ", 
+cat0(
+     "Podemos afirmar que el 4% de los peores casos presenta una gran ",
      "variabilidad frente al 50%. Es decir, tenemos valores atípicos.\n",
      "Esto significa que, antes de implementar la cache en memoria, ",
      "los microservicios se presentan inestables y generan una mala ",
      "experiencia de usuario.\n",
-     "Sería interesante comparar esta situación con `Lat_Post` ", 
-     "(Latencia tras haber implementado la cache).\n\n")
+     "Sería interesante comparar esta situación con `Lat_Post` ",
+     "(Latencia tras haber implementado la cache).\n\n"
+)
 
-cat0("Sin embargo, también podemos afirmar que se garantiza una latencia ",
+cat0(
+     "Sin embargo, también podemos afirmar que se garantiza una latencia ",
      "inferior a ", round(percentiles_interesantes[2], 1), "ms para el 90% ",
      "de las conexiones; indicando que si existe algún tipo de estabilidad si ",
      "se pudiera eliminar los valores atípicos. Es decir, si parece que pueda ",
-     "haber algúna solución a la inestabilidad anterioremente descrita.\n")
+     "haber algúna solución a la inestabilidad anterioremente descrita.\n"
+)
 
 path_med_posicion <- here::here("data", "processed", "latencia_base_02_vectores_med_posicion.RData")
 save(cuartiles, deciles, percentiles_interesantes, percentiles, file = path_med_posicion)
@@ -260,22 +272,26 @@ cat0("Coeficiente de Curtosis: ", round(curtosis, 3), "\n")
 ## @knitr med_forma_02
 
 h("Observaciones")
-cat0("El Coeficiente de asimetría de Fisher es positivo (",
+cat0(
+     "El Coeficiente de asimetría de Fisher es positivo (",
      round(asimetria, 3), " > 0), lo cual indica que existe una asimetría o ",
      "sesgo a la derecha. Confirma nuestra sospecha inicial al observar ",
-     "las medidas de posición.\n\n")
+     "las medidas de posición.\n\n"
+)
 
-cat0("El coeficiente de Curtosis es positivo (",
+cat0(
+     "El coeficiente de Curtosis es positivo (",
      round(curtosis, 3), " > 0), lo cual indica que la distribución es ",
      "bastante más apuntada que la distribución normal. Es decir, la ",
      "distribución es Leptocúrtica. Confirma nuestra sospecha inicial al ",
-     "observar las medidas de dispersión.\n")
+     "observar las medidas de dispersión.\n"
+)
 
 
 tabla_med_forma <- data.frame(
-  "asimetria" = round(asimetria, 3),
-  "curtosis" = round(curtosis, 3),
-  row.names = ""
+     "asimetria" = round(asimetria, 3),
+     "curtosis" = round(curtosis, 3),
+     row.names = ""
 )
 
 h("Tabla de medidas de forma")
@@ -284,4 +300,3 @@ print(tabla_med_forma)
 path_tabla_med_forma <- here::here("data", "processed", "latencia_base_02_tabla_med_forma.RData")
 save(tabla_med_forma, file = path_tabla_med_forma)
 cat("\nSe ha generado el fichero: ", path_tabla_med_forma, "\n")
-

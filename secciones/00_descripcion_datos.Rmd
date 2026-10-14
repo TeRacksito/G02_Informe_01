@@ -1,0 +1,44 @@
+```{r setup-00, include=FALSE}
+knitr::read_chunk(here::here("scripts", "carga_y_procesamiento_01.R"))
+```
+
+```{r dependencias, include=FALSE, eval=TRUE}
+```
+
+## Descripción de los Datos
+
+El primer paso, para poder afrontar este análisis, es realizar una primera aproximación a los datos. Observar su naturaleza, y decidir su tipo. Además, las mediciones pueden contener valores inválidos *(por ejemplo, magnitudes físicas negativas)* que han de ser normalizadas al valor `NA`.
+
+### Variables Discretas y Continuas
+
+Vamos a definir todas las variables que consideremos **discretas** o **continuas**; es decir, `numeric`.
+
+Además, vamos a realizar una normalización para magnitudes físicas.
+
+```{r definicion_continuas_discretas, echo=TRUE, eval=FALSE}
+```
+
+### Atributos Ordinales
+
+Para los atributos ordinales, es apropiado asignar etiquetas más significativas.
+
+Aunque no sea estrictamente necesario, definir los `levels` en los atributos ofrece protección; tanto ordinales como nominales. Pues, si existiera un valor que desconocemos, y no esperamos, este se convertiría en `NA`.
+
+```{r definicion_ordinales_nominales, echo=TRUE, eval=FALSE}
+```
+
+### Atributos Nominales
+
+Estos atributos no poseen orden, pero siguen siendo un `factor`, sin `levels`.
+
+```{r definicion_nominales, echo=TRUE, eval=FALSE}
+```
+```{r fin, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+### Scripts originales de análisis.
+
+Estos son los scripts originales que se usaron para realizar este análisis estadístico.
+
+```{r, code=readLines(here::here("scripts", "carga_y_procesamiento_01.R")), eval=FALSE, class.source="fold-hide"}
+```

@@ -2,7 +2,7 @@
 knitr::read_chunk(here::here("scripts", "latencia_base_01.R"))
 ```
 
-```{r dependecias, include=FALSE, eval=TRUE}
+```{r dependencias, include=FALSE, eval=TRUE}
 ```
 
 ### Tabla de Frecuencias
