@@ -17,3 +17,21 @@ knitr::kable(
   digits = 3
 )
 ```
+### Representación gráfica
+
+El histograma permite observar la distribución de las peticiones por segundo e identificar los intervalos con mayor frecuencia.
+
+```{r rps-histograma, fig.cap="Distribución de las peticiones por segundo (RPS)"}
+ggplot2::ggplot(datos_cloud, ggplot2::aes(x = RPS)) +
+  ggplot2::geom_histogram(
+    bins = 30,
+    fill = "white",
+    colour = "black"
+  ) +
+  ggplot2::labs(
+    title = "Distribución de las peticiones por segundo",
+    x = "Peticiones por segundo (req/s)",
+    y = "Número de servidores"
+  ) +
+  ggplot2::theme_bw()
+```
