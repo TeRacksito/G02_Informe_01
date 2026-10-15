@@ -1,12 +1,34 @@
-## Análisis de las Peticiones por Segundo (`RPS`)
+## Análisis de las Peticiones por Segundo (RPS)
 
 ### Descripción de la variable
 
-La variable RPS (Requests Per Second) representa el número de peticiones por segundo que procesa un servidor. Es una variable cuantitativa discreta que permite estudiar el volumen de tráfico y la capacidad de procesamiento de los servidores.
+La variable RPS (*Requests Per Second*) representa el número de peticiones por segundo que procesa un servidor. Es una variable cuantitativa discreta que permite estudiar el volumen de tráfico y la capacidad de procesamiento de los servidores.
+
+### Carga de datos
+
+Cargamos el conjunto de datos procesados que contiene la variable RPS.
+
+```{r rps-datos, include=FALSE}
+path_datos <- here::here("data", "processed", "Cloud_Performance_procesado.RData")
+
+if (!file.exists(path_datos)) {
+  stop("No se encuentra el archivo de datos: ", path_datos)
+}
+
+load(path_datos)
+```
+
+### Resumen estadístico
+
+El resumen estadístico permite obtener una primera visión de la distribución de RPS.
+
+```{r rps-resumen}
+summary(datos_cloud$RPS)
+```
 
 ### Tabla de frecuencias
 
-Para estudiar la distribución de los valores de RPS, se utiliza una tabla de frecuencias agrupadas.
+Para estudiar la distribución de los valores de RPS, utilizamos una tabla de frecuencias generada mediante la función `Freq()` del paquete `DescTools`.
 
 ```{r rps-frecuencias}
 tabla_frecuencias_rps <- DescTools::Freq(datos_cloud$RPS, na.rm = TRUE)
@@ -17,28 +39,22 @@ knitr::kable(
   digits = 3
 )
 ```
+
 ### Representación gráfica
 
-El histograma permite observar la distribución de las peticiones por segundo e identificar los intervalos con mayor frecuencia.
+Como RPS es una variable cuantitativa con numerosos valores posibles, un gráfico de sectores no resulta adecuado. Por ello, utilizamos un histograma de frecuencias, que permite observar la distribución de las peticiones por segundo e identificar los intervalos con mayor frecuencia.
 
-```{r rps-histograma, fig.cap="Distribución de las peticiones por segundo (RPS)"}
-ggplot2::ggplot(datos_cloud, ggplot2::aes(x = RPS)) +
-  ggplot2::geom_histogram(
-    bins = 30,
-    fill = "white",
-    colour = "black"
-  ) +
-  ggplot2::labs(
-    title = "Distribución de las peticiones por segundo",
-    x = "Peticiones por segundo (req/s)",
-    y = "Número de servidores"
-  ) +
-  ggplot2::theme_bw()
+El histograma se genera mediante el script original `02-analisis_rps.R` y se guarda en la carpeta `outputs`. A continuación, mostramos el gráfico generado.
+
+```{r rps-histograma, echo=FALSE, out.width="85%", fig.cap="Distribución de las peticiones por segundo (RPS)"}
+knitr::include_graphics(
+  here::here("outputs", "rps_01_histograma_frecuencias.png")
+)
 ```
 
 ### Medidas descriptivas
 
-Se calculan las medidas de tendencia central y dispersión para resumir el comportamiento de la variable.
+Calculamos las medidas de tendencia central y dispersión para resumir el comportamiento de la variable RPS.
 
 ```{r rps-medidas}
 media_rps <- mean(datos_cloud$RPS, na.rm = TRUE)
@@ -71,6 +87,18 @@ knitr::kable(
 )
 ```
 
+### Representatividad de la media
+
+El coeficiente de variación permite estudiar la dispersión relativa de los datos respecto a la media. Utilizamos el 30 % como referencia orientativa para valorar su representatividad.
+
+```{r rps-representatividad}
+if (cv_rps < 30) {
+  cat("El coeficiente de variación es inferior al 30 %. La media puede considerarse representativa del tráfico.")
+} else {
+  cat("El coeficiente de variación es igual o superior al 30 %. Existe una dispersión relativa elevada y la media puede ser poco representativa.")
+}
+```
+
 ### Forma de la distribución
 
 La asimetría permite estudiar si la distribución presenta una cola más larga hacia los valores altos o bajos. La curtosis describe el grado de concentración de los datos respecto a una distribución de referencia.
@@ -95,6 +123,6 @@ knitr::kable(
 
 La media representa el número promedio de peticiones por segundo procesadas por los servidores, mientras que la mediana divide las observaciones en dos mitades. La moda identifica el valor más frecuente.
 
-La desviación típica mide la dispersión de los valores respecto a la media. El coeficiente de variación expresa la dispersión en relación con la media y permite valorar su representatividad.
+La desviación típica mide la dispersión de los valores respecto a la media. El coeficiente de variación expresa la dispersión relativa y permite valorar la representatividad de la media.
 
-La asimetría y la curtosis permiten describir la forma de la distribución. El histograma complementa estas medidas y facilita la identificación de concentraciones de observaciones y posibles asimetrías.
+La asimetría y la curtosis permiten describir la forma de la distribución. Por último, el histograma facilita la identificación de concentraciones de observaciones y posibles asimetrías.
