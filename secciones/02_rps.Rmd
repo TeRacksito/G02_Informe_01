@@ -1,1 +1,19 @@
 ## Análisis de las Peticiones por Segundo (`RPS`)
+
+### Descripción de la variable
+
+La variable RPS (Requests Per Second) representa el número de peticiones por segundo que procesa un servidor. Es una variable cuantitativa discreta que permite estudiar el volumen de tráfico y la capacidad de procesamiento de los servidores.
+
+### Tabla de frecuencias
+
+Para estudiar la distribución de los valores de RPS, se utiliza una tabla de frecuencias agrupadas.
+
+```{r rps-frecuencias}
+tabla_frecuencias_rps <- DescTools::Freq(datos_cloud$RPS, na.rm = TRUE)
+
+knitr::kable(
+  as.data.frame(tabla_frecuencias_rps),
+  caption = "Tabla de frecuencias de la variable RPS",
+  digits = 3
+)
+```
