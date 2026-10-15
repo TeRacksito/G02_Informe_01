@@ -1,1 +1,99 @@
-## Análisis de la Eficiencia (`Efficiency`)
+## Análisis de la Eficiencia Energética (Efficiency)
+
+### Descripción de la variable
+
+La variable `Efficiency` representa la clasificación energética y de eficiencia del hardware asignado a cada servidor virtual por la plataforma cloud. Es una variable cualitativa ordinal, ya que sus categorías presentan un orden jerárquico natural: *Bronze < Silver < Gold*. 
+
+### Carga de datos
+
+Cargamos el conjunto de datos procesados que contiene la variable `Efficiency`. Además, nos aseguramos de que R entienda el orden correcto de los niveles.
+
+```{r eficiencia-datos, include=FALSE}
+path_datos <- here::here("data", "processed", "Cloud_Performance_procesado.RData")
+
+if (!file.exists(path_datos)) {
+  stop("No se encuentra el archivo de datos: ", path_datos)
+}
+
+load(path_datos)
+
+# Asegurarnos de que R interprete la variable como un factor ordinal
+datos_cloud$Efficiency <- factor(
+  datos_cloud$Efficiency, 
+  levels = c("Bronze", "Silver", "Gold"), 
+  ordered = TRUE
+)
+```
+
+### Tabla de frecuencias
+
+Para estudiar la distribución de la eficiencia de los servidores, generamos una tabla de frecuencias absolutas, relativas y acumuladas mediante la función `Freq()` del paquete `DescTools`.
+
+```{r eficiencia-frecuencias}
+tabla_frecuencias_eff <- DescTools::Freq(datos_cloud$Efficiency)
+
+knitr::kable(
+  as.data.frame(tabla_frecuencias_eff),
+  caption = "Tabla de frecuencias de la variable Efficiency",
+  digits = 3
+)
+```
+
+### Representación gráfica
+
+Al tratarse de una variable cualitativa, el histograma no es adecuado. La representación idónea es un diagrama de barras de frecuencias absolutas que respete el orden de las categorías en el eje horizontal.
+
+El diagrama se ha generado mediante el script original de la variable y se encuentra guardado en la carpeta `outputs`.
+
+```{r eficiencia-barras, echo=FALSE, out.width="85%", fig.cap="Distribución de la Eficiencia Energética"}
+knitr::include_graphics(
+  here::here("outputs", "eficiencia_01_diagrama_barras_frecuencias.png")
+)
+```
+
+### Medidas descriptivas
+
+Dado que `Efficiency` es una variable cualitativa ordinal, no es posible calcular medidas como la media o la desviación típica. Sin embargo, sí podemos analizar su tendencia central y posición mediante la moda, la mediana y los cuartiles.
+
+```{r eficiencia-medidas}
+moda_eff <- DescTools::Mode(datos_cloud$Efficiency, na.rm = TRUE)
+mediana_eff <- median(datos_cloud$Efficiency, na.rm = TRUE)
+cuartiles_eff <- quantile(datos_cloud$Efficiency, probs = c(0.25, 0.75), type = 1, na.rm = TRUE)
+
+tabla_medidas_eff <- data.frame(
+  Medida = c(
+    "Moda",
+    "Primer Cuartil (Q1)",
+    "Mediana (Q2)",
+    "Tercer Cuartil (Q3)"
+  ),
+  Valor = c(
+    as.character(moda_eff[1]),
+    as.character(cuartiles_eff[1]),
+    as.character(mediana_eff),
+    as.character(cuartiles_eff[2])
+  )
+)
+
+knitr::kable(
+  tabla_medidas_eff,
+  caption = "Medidas descriptivas de posición para Efficiency"
+)
+```
+
+### Respuesta a la cuestión 3.a
+
+El enunciado plantea la siguiente cuestión: *¿Qué porcentaje de servidores tienen una eficiencia superior a Bronze?*
+
+```{r eficiencia-cuestion}
+porcentaje_sup_bronze <- mean(datos_cloud$Efficiency > "Bronze", na.rm = TRUE) * 100
+cat("El porcentaje de servidores con eficiencia superior a Bronze es del", round(porcentaje_sup_bronze, 2), "%\n")
+```
+
+### Interpretación de los resultados
+
+Los datos revelan que la infraestructura cloud auditada está dominada por hardware de rendimiento medio-alto. 
+
+Observando la moda y la mediana, comprobamos que el valor central de la distribución recae sobre la categoría **Silver**. Concretamente, la categoría *Silver* es la más frecuente en la flota de servidores (alcanzando a 384 máquinas), y la mediana en este nivel indica que al menos la mitad de los servidores tienen un rendimiento *Silver* o inferior.
+
+Destaca el hecho de que el **75.2%** de los servidores tienen una eficiencia superior a *Bronze* (repartidos casi a partes iguales entre *Silver* y *Gold*). Esto nos dice que solo una cuarta parte de la infraestructura (el 24.8% que representa el primer cuartil) se encuentra operando con hardware de baja eficiencia. La concentración de recursos en las categorías superiores (*Gold* marca el tercer cuartil) favorece un comportamiento estable frente a demandas de tráfico elevadas.
