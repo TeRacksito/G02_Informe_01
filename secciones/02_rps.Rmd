@@ -121,8 +121,10 @@ knitr::kable(
 
 ### Interpretación de los resultados
 
-La media representa el número promedio de peticiones por segundo procesadas por los servidores, mientras que la mediana divide las observaciones en dos mitades. La moda identifica el valor más frecuente.
+Los datos reflejan un comportamiento operativo bastante estable y controlado en el conjunto de los 1000 servidores. 
 
-La desviación típica mide la dispersión de los valores respecto a la media. El coeficiente de variación expresa la dispersión relativa y permite valorar la representatividad de la media.
+Con un tráfico promedio de 19,10 req/s y un valor central de 18 req/s, la mayor parte de la flota trabaja bajo una carga moderada. La coincidencia exacta entre la mediana y la moda (18 req/s) nos indica que el régimen habitual de trabajo de los nodos se sitúa en torno a esa cifra.
 
-La asimetría y la curtosis permiten describir la forma de la distribución. Por último, el histograma facilita la identificación de concentraciones de observaciones y posibles asimetrías.
+El coeficiente de variación alcanza un 29,14%, situándose rozando el límite del 30%. Esto significa que, aunque la demanda varía entre servidores debido a las horas punta o diferencias entre proveedores, la dispersión no es descontrolada. Por tanto, la media se mantiene como una referencia fiable para la planificación de capacidad del sistema.
+
+Por último, la asimetría de 0,41 nos indica que la distribución se estira un poco hacia la derecha. La gran mayoría de los servidores (casi el 60%) se mueven entre 10 y 20 req/s, pero hay momentos de picos de carga donde algunas máquinas llegan a las 40 req/s. Como son picos puntuales, no hay un problema de saturación en la red, simplemente picos normales de tráfico.
