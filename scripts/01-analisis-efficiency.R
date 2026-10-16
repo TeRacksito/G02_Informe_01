@@ -2,11 +2,12 @@
 # Tarea: Análisis Descriptivo Unidimensional
 # Script 02: Análisis de la variable Eficiencia Energética (Efficiency)
 # Autor: Adrián Reyes Gómez
-# 
+# Contribuidores: Angel Krasimirov Stoyanov (pequeños cambios)
+#
 # El script realiza la tabla de frecuencias, Cálculo de las medidas de tendencia
-# general y representación gráfica de la variable cualitativa ordinal 
+# general y representación gráfica de la variable cualitativa ordinal
 # 'Efficiency'.
-# 
+#
 # Entradas:
 # - data/processed/Cloud_Performance_procesado.RData
 
@@ -17,6 +18,8 @@
 
 # 0. LIMPIEZA ENTORNO DE TRABAJO
 rm(list = ls())
+
+## @knitr dependencias
 
 # 1. CARGA DE LIBRERÍAS
 library(here)
@@ -39,7 +42,11 @@ load(path_datos)
 # interpretación de su resultado.
 
 # TABLA DE FRECUENCIAS DE EFFICIENCY
+## @knitr tabla_frecuencias_01
 tabla_freq <- Freq(datos_cloud$Efficiency)
+
+## @knitr tabla_frecuencias_02
+
 cat("          1. TABLA DE FRECUENCIAS DE EFFICIENCY     \n")
 print(tabla_freq)
 
@@ -47,28 +54,52 @@ print(tabla_freq)
 cat("      2. MEDIDAS DESCRIPTIVAS E INTERPRETACIÓN      \n")
 
 # Cálculo de la moda
+
+## @knitr med_descriptivas_01
+
 modaeff <- Mode(datos_cloud$Efficiency)
 num_moda <- attr(modaeff, "freq")
 cat(" Moda: ", as.character(modaeff[1]), " (freq = ", num_moda, ")\n")
+
+## @knitr med_descriptivas_02
+
 cat(" La categoría de eficiencia energética más frecuente es ", as.character(modaeff[1]), " con ", num_moda, " servidores.\n")
 
 # Cálculo de la mediana
+
+## @knitr med_descriptivas_03
+
 medianaeff <- quantile(datos_cloud$Efficiency, 0.5, type = 1)
 num_mediana_acum <- sum(datos_cloud$Efficiency <= medianaeff)
 cat(" Mediana: ", as.character(medianaeff), " (frecuencia acumulada = ", num_mediana_acum, ")\n")
+
+## @knitr med_descriptivas_04
+
 cat(" Al ser ordinal, el 50% de los servidores (", num_mediana_acum, " servidores) tiene eficiencia ", as.character(medianaeff), " o inferior.\n")
 
 # Cuartiales
+
+## @knitr med_descriptivas_05
+
 q1_eff <- quantile(datos_cloud$Efficiency, 0.25, type = 1)
 q3_eff <- quantile(datos_cloud$Efficiency, 0.75, type = 1)
 cat(" Primer Cuartil Q1 - 25% : ", as.character(q1_eff), "\n")
-cat(" El 25% de los servidores tiene como máximo eficiencia ", as.character(q1_eff), "\n")
 cat(" Tercer Cuartil Q3 - 75% : ", as.character(q3_eff), "\n")
+
+## @knitr med_descriptivas_06
+
+cat(" El 25% de los servidores tiene como máximo eficiencia ", as.character(q1_eff), "\n")
 cat(" El 75% de los servidores tiene como máximo eficiencia ", as.character(q3_eff), "\n")
 
 # Cuestión 3.a: Porcentaje Superior a Bronze
+
+## @knitr cuestiones_01
+
 pct_sup_bronze <- mean(datos_cloud$Efficiency > "Bronze", na.rm = TRUE) * 100
-cat("Porcentaje con eficiencia superior a 'Bronze':", round(pct_sup_bronze, 2), "%\n")
+cat("Porcentaje de servidores con eficiencia superior a 'Bronze':", round(pct_sup_bronze, 2), "%\n")
+
+## @knitr cuestiones_02
+
 cat("El ", round(pct_sup_bronze, 2), "% de los servidores tiene eficiencia superior a 'Bronze'.\n")
 
 # 5. GENERACIÓN Y GUARDADO DEL GRÁFICO
@@ -76,8 +107,8 @@ cat("El ", round(pct_sup_bronze, 2), "% de los servidores tiene eficiencia super
 dir.create(here::here("outputs"), showWarnings = FALSE, recursive = TRUE)
 
 # Diagrama de barras ggplot
-p_eficiencia <- ggplot(datos_cloud, aes(x = Efficiency)) + 
-  geom_bar(fill = "white", colour = "black") + 
+p_eficiencia <- ggplot(datos_cloud, aes(x = Efficiency)) +
+  geom_bar(fill = "white", colour = "black") +
   labs(
     title = "Distribución de Eficiencia Energética",
     subtitle = "Análisis unidimensional de la variable Efficiency",
@@ -90,10 +121,10 @@ print(p_eficiencia)
 
 path_grafico <- here::here("outputs", "eficiencia_01_diagrama_barras_frecuencias.png")
 ggsave(
-  filename = path_grafico, 
-  plot = p_eficiencia, 
+  filename = path_grafico,
+  plot = p_eficiencia,
   width = 8,
-  height = 6, 
+  height = 6,
   dpi = 300
 )
 
