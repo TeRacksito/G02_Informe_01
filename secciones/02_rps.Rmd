@@ -128,3 +128,10 @@ Con un tráfico promedio de 19,10 req/s y un valor central de 18 req/s, la mayor
 El coeficiente de variación alcanza un 29,14%, situándose rozando el límite del 30%. Esto significa que, aunque la demanda varía entre servidores debido a las horas punta o diferencias entre proveedores, la dispersión no es descontrolada. Por tanto, la media se mantiene como una referencia fiable para la planificación de capacidad del sistema.
 
 Por último, la asimetría de 0,41 nos indica que la distribución se estira un poco hacia la derecha. La gran mayoría de los servidores (casi el 60%) se mueven entre 10 y 20 req/s, pero hay momentos de picos de carga donde algunas máquinas llegan a las 40 req/s. Como son picos puntuales, no hay un problema de saturación en la red, simplemente picos normales de tráfico.
+
+### Scripts originales de análisis.
+
+Estos son los scripts originales que se usaron para realizar este análisis estadístico.
+
+```{r, code=readLines(here::here("scripts", "02-analisis_rps.R")), eval=FALSE, class.source="fold-hide"}
+```
