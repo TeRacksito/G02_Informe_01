@@ -46,6 +46,8 @@ exportar_tabla(
 )
 ```
 
+Un inciso, vemos que la longitud muestral es menor que `1000`, porque existen valores negativos que fueron normalizados a `NA` en el proceso de descripción de las variables.
+
 Como podemos observar, hay varios intervalos que tienen una frecuencia absoluta menor de cinco. Sería pertinente realizar una fusión o reagrupación de estos intervalos.
 
 ```{r tabla_frec_03, echo=TRUE, eval=FALSE}

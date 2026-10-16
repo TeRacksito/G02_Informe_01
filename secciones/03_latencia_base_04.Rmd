@@ -60,6 +60,10 @@ Primero, todos pertenecen al mismo proveedor/región (`` `r as.character(atipico
 
 Segundo, todos presentan un uso intensivo de CPU (`` `r atipicos_frame_top3$CPU[3]`% - `r atipicos_frame_top3$CPU[1]`% ``) al momento de registrar la latencia. Esto podría indicar colapsos o nodos (de servidores) saturados.
 
+Estas observaciones son **totalmente coherentes** con el problema más común que se produce cuando un nodo dentro de una red de servidores se satura: **su tiempo de respuesta se dispara**, o incluso falla (como vemos, uno de ellos sufrió dos reinicios),
+dejando al usuario a la espera de uan respuesta. Es decir, esto es algo que perfectamente podría darse y observarse en
+datos reales.
+
 #### Análisis extra. Comparación Latencia Base y Latencia Posterior
 
 Sería interesante plantear una cuestión extra. Recordemos que uno de los aspectos más importantes de estos datos es que comparan un mismo aspecto antes y después de una mejora crítica. Entonces, sería interesante plantearse, ¿dicha mejora, la implementación de caché a nivel de memoria RAM, ha dado resultados positivos?
@@ -80,7 +84,7 @@ A simple ojo, ya podemos observar ciertos cambios significativos, pero sería me
 ```{r cuestion_extra_01_03, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
 ```
 
-Ahora es mucho más evidente: la mejora es significativa. Notese que lo que aquí se considera mejora es que los valores (ya sean medianas, o rangos) sean más pequeños. Porque siempre interesa que la latencia sea lo más baja y estable posible.
+Ahora es mucho más evidente: **la mejora es significativa**. Nótese que lo que aquí se considera mejora es que los valores (ya sean medianas, o rangos) sean más pequeños. Porque siempre interesa que la latencia sea lo más baja y estable posible.
 
 ```{r child = '03_latencia_base_04_2_exportacion.Rmd', envir = new.env()}
 ```
