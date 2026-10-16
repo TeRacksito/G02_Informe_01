@@ -1,1 +1,101 @@
+```{r setup-01-01, include=FALSE}
+knitr::read_chunk(here::here("scripts", "01-analisis-efficiency.R"))
+```
+
+```{r dependencias, include=FALSE, eval=TRUE}
+```
+
 ## Análisis de la Eficiencia (`Efficiency`)
+
+> Angel Krasimirov Stoyanov:
+> A modo de completitud, y para evitar dejar esta sección vacía, realizaré el R Markdown para informar del análisis que el compañero Adrián Reyes Gómez realizó sobre la variable `Efficiency`. 
+
+El **atributo ordinal** `Efficiency` señala la certificación de 
+eficiencia energética de los mismos. Este tipo de certificaciones se
+suele medir mediante etiquetas como `Platinum`, `Gold`, `Silver`, etc;
+muy similar a los valores utilizados en este caso. Un certificado de eficiencia energética
+es un indicador de la calidad del hardware de una máquina respecto a su consumo energético por
+unidad de trabajo; o también, tiempo de trabajo.
+
+Un servidor con una certificación `Bronze` indica una deficiente
+eficiencia energética; mientras que `Gold` indica lo contrario.
+
+### Tabla de Frecuencias
+
+```{r tabla_frecuencias_01, echo=TRUE, eval=FALSE}
+```
+```{r tabla_frecuencias_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r tabla_frecuencias_01_local, echo=FALSE}
+tabla_freq_local <- tabla_freq
+
+tabla_freq_local$perc_i <- round((tabla_freq_local$perc * 100), 2)
+
+tabla_freq_local <- tabla_freq_local[, c(1, 2, 3, 6, 4, 5)]
+
+colnames(tabla_freq_local) <- c(
+  "Valor",
+  "n<sub>i</sub>",
+  "f<sub>i</sub>",
+  "%<sub>i</sub>",
+  "N<sub>i</sub>",
+  "F<sub>i</sub>"
+)
+
+exportar_tabla(
+  tabla = tabla_freq_local,
+  caption = "Tabla de Frecuencias"
+)
+```
+
+
+
+```{r tabla_frecuencias_02, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r med_descriptivas_01, echo=TRUE, eval=FALSE}
+```
+```{r med_descriptivas_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+
+
+```{r med_descriptivas_02, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r med_descriptivas_03, echo=TRUE, eval=FALSE}
+```
+```{r med_descriptivas_03, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+Es interesante mencionar que no es posible calcular la mediana de la variable `Efficiency` mediante la función `median()`, ya que esta función no soporta variables de tipo `factor`. Por ello, se utiliza la función `quantile()` con el parámetro `type = 1`, que permite calcular la mediana de variables ordinales.
+
+```{r med_descriptivas_04, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r med_descriptivas_05, echo=TRUE, eval=FALSE}
+```
+```{r med_descriptivas_05, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+### Cuestión 3.a
+
+**¿Qué porcentaje de servidores tienen una eficiencia superior a Bronze?**
+
+Bastaría con restar la frecuencia relativa acumulada de Bronze a `1`, tal que ``1 - `r tabla_freq_local[1, 6]` = `r round(1 - tabla_freq_local[1, 6], 3)` ``. Es decir, un `` `r round(1 - tabla_freq_local[1, 6], 3) * 100`% `` de servidores tienen una eficiencia superior a Bronze.
+
+También, podemos hacer:
+
+```{r med_descriptivas_06, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r cuestiones_01, echo=TRUE, eval=FALSE}
+```
+```{r cuestiones_01, echo=FALSE, eval=TRUE, results='hold'}
+```
+```{r cuestiones_02, include=FALSE, echo=FALSE, eval=TRUE, results='hold'}
+```
+
+### Diagrama de Barras
+
+```{r mostrar_barplot_local, echo=FALSE, fig.align='center'}
+knitr::include_graphics(here::here("outputs", "eficiencia_01_diagrama_barras_frecuencias.png"))
+```
+
+Gracias al diagrama, podemos realizar una suposición sobre cómo es la calidad del hardware. Puesto que la mayoría de servidores se encuentran entre `Silver` y `Gold`, podemos suponer que la calidad del hardware es buena.
