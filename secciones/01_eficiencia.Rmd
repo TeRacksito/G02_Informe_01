@@ -99,3 +99,10 @@ knitr::include_graphics(here::here("outputs", "eficiencia_01_diagrama_barras_fre
 ```
 
 Gracias al diagrama, podemos realizar una suposición sobre cómo es la calidad del hardware. Puesto que la mayoría de servidores se encuentran entre `Silver` y `Gold`, podemos suponer que la calidad del hardware es buena.
+
+### Scripts originales de análisis.
+
+Estos son los scripts originales que se usaron para realizar este análisis estadístico.
+
+```{r, code=readLines(here::here("scripts", "01-analisis-efficiency.R")), eval=FALSE, class.source="fold-hide"}
+```
