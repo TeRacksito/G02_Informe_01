@@ -101,3 +101,28 @@ de vista de los requisitos del informe.
 ---
 
 # Conclusiones Globales
+
+Gracias al análisis exploratorio del atributo ordinal Eficiencia, hemos podido determinar que, en
+definitiva, los servidores de esta infraestructura cloud tienen un hardware bueno; y cabría esperar
+que este no sea motivo de problemas relacionados con el rendimiento o reinicios.
+
+Sin embargo, al analizar la variable continua Latencia Base, nos damos cuenta que existe un
+**problema de rendimiento**. Más concretamente, el tiempo de respuesta inicial (latencia) de los
+servidores era considerablemente alto en determinadas situaciones.
+
+Observando el análisis de la variable discreta Peticiones Por Segundo, podemos plantear que existen
+determinados momentos o picos de carga; que podrían estar relacionados con el problema de rendimiento.
+Sin embargo, el análisis no es concluyente.
+
+Finalmente, comparando la variable continua Latencia Base con la variable continua Latencia Post
+(posterior a la implementación de una capa de caché en memoria principal), podemos determinar que
+esta infraestructura cloud ha sufrido un cambio, una mejora, que definitivamente ha reducido
+el problema observado.
+
+Por ende, podemos concluir que la implementación de la capa de caché en memoria principal
+ha sido del todo efectiva.
+
+# Repositorio del proyecto
+
+Si usted desea ver el código original y, en general, el proceso o histórico del proyecto, puede acceder
+a este, ahora público, repositorio; en este [enlace](https://github.com/TeRacksito/G02_Informe_01).
