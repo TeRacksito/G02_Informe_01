@@ -18,9 +18,9 @@ Estas medidas nos permiten conocer los valores alrededor de los cuales se concen
 ```{r med_central_01, echo=FALSE, eval=TRUE, results='hold'}
 ```
 
-Las observaciones se concentran alrededor de los `` `r round(media, 2)` `` ms de latencia base.
+Las observaciones se concentran alrededor de los `` `r round(media, 2)` ms`` de latencia base.
 
-Sin embargo, hemos obtenido una serie de modas. Esto es porque carece de sentido estadístico calcular las modas de una variable continua sin agrupar.
+Sin embargo, hemos obtenido una serie muy grande de modas. Esto es porque carece de sentido estadístico calcular las modas de una variable continua sin agrupar.
 
 Es más apropiado calcular el intervalo modal e interpolar geográficamente la moda.
 
@@ -35,7 +35,7 @@ Es más apropiado calcular el intervalo modal e interpolar geográficamente la m
 ```{r child = '03_latencia_base_02_1_exportacion.Rmd', envir = new.env()}
 ```
 
-Podemos observar que la media (`` `r tabla_med_centrales$media` ms``) es sensiblemente mayor que el bloque central (`` `r tabla_med_centrales$mediana` ms - `r tabla_med_centrales$moda` ms``). Podemos intuir que existe una cola, una tendencia a la derecha, que empuja y desplaza la media; pero es necesario realizar más medidas.
+Podemos observar que la media (`` `r tabla_med_centrales$media` ms``) es ligeramente mayor que el bloque central (`` `r tabla_med_centrales$mediana` ms - `r tabla_med_centrales$moda` ms``). Podemos intuir que existe una cola, una tendencia a la derecha, que empuja y desplaza la media; pero es necesario realizar más medidas.
 
 #### Medidas de Dispersión
 
@@ -48,7 +48,7 @@ Nos permiten conocer la distribución de los datos respecto a las tendencias cen
 
 El coeficiente de variación de Pearson es mayor de `30%` (`` `r cv_pearson_perc`% ``) lo cual **indica que la media (`` `r tabla_med_centrales$media` ms``) no es representativa de los datos**. Es recomendable utilizar, por ejemplo, la mediana (`` `r tabla_med_centrales$mediana` ms``) como indicador robusto.
 
-Además, podemos ver que el rango intercuartílico (`` `r round(rango_iqr, 3)` ``) es sensiblemente más pequeño que el rango de la muestra (`` `r round(rango, 3)` ``). Esto significa que el `50%` de las observaciones recaen en unos valores muy juntos; haciendo ver que el resto de valores se dispersan mucho. Podemos pensar que la distribución será leptocúrtica respecto a la distribución normal; pero podemos confirmar esto mediante las medidas de forma que haremos más adelante.
+Además, podemos ver que el rango intercuartílico (`` `r round(rango_iqr, 3)` ``) es sensiblemente más pequeño que el rango de la muestra (`` `r round(rango, 3)` ``). Esto significa que el `50%` de las observaciones recaen en unos valores muy juntos; haciendo ver que el resto de valores se dispersan mucho. Podemos pensar que la distribución será leptocúrtica respecto a la distribución normal; pero para confirmar esto, será mejor utilizar las medidas de forma que haremos más adelante.
 
 Podemos empezar a sospechar de que existen valores atípicos, dado que sospechamos de una cola o tendencia por la derecha, y que además la mayoría de datos se concentran en un pequeño rango.
 
@@ -70,9 +70,9 @@ Estas medidas ayudan a tener una mejor idea de las frecuencias en umbrales concr
 
 De nuevo, observamos una larga cola por la derecha. Resulta interesante plantearse que esta cola (``P95 (`r round(percentiles[["95%"]], 1)` ms) - P99 (`r round(percentiles[["99%"]], 1)` ms)``) representa las latencias más lentas. Es decir, las peores experiencias de usuario respecto a la respuesta de los servidores.
 
-Más concretamente, podemos afirmar que el `4%` de los peores casos presenta una gran variabilidad frente a la tendencia central. Es decir, que existen valores atípicos. Si tomamos en cuenta el contexto, significa que antes de implementar la cache en memoria, se producían inestabilidades puntuales en la latencia y, por ende, en la experiencia de usuario. Por ello, sería interesante realizar una comparativa, más adelante.
+Más concretamente, podemos afirmar que el `4%` de los peores casos presenta una gran variabilidad frente a la tendencia central. Es decir, que existen valores atípicos. Si tomamos en cuenta el contexto, significa que antes de implementar la cache en memoria, se producían inestabilidades puntuales en la latencia y, por ende, en la experiencia de usuario. Por ello, sería interesante realizar una comparativa entre estas dos variables, más adelante.
 
-Sin embargo, también podemos afirmar que se garantiza una latencia inferior (estable) a `` `r round(percentiles_interesantes[2], 1)` ms`` para el `90%` de las conexiones; indicando una buena estabilidad en caso de obviar los valores atípicos.
+Sin embargo, también podemos afirmar que se garantiza una latencia inferior (estable) a `` `r round(percentiles_interesantes[2], 1)` ms`` para el `90%` de las conexiones; indicando una buena estabilidad, un buen funcionamiento nominal, en caso de obviar los valores atípicos.
 
 ```{r child = '03_latencia_base_02_3_exportacion.Rmd', envir = new.env()}
 ```

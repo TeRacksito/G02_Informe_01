@@ -15,27 +15,35 @@ Sin embargo, antes de pasar a ver los diagramas, sería interesante mencionar la
 
 #### Histograma
 
-Una vez dicho eso, observemos el Histograma a continuación. Ahora tenemos una idea más visual de la tendencia o sesgo a la derecha de la distribución de datos. Además, la densidad de frecuencia del ultimo intervalo es extremadamente bajo; coincidiendo con las conclusiones que hemos desarrollado acerca de los valores atípicos.
-
-La línea vertical discontinua que se puede observar es la moda; que calculamos anteriormente mediante una interpolación geométrica.
-
-También, podemos coincidir visualmente la idea de que la distribución es Leptocúrtica; bastante apuntalada alrededor de su moda.
+Una vez dicho eso, observemos el Histograma a continuación.
 
 ```{r mostrar_histograma_local, echo=FALSE, fig.align='center'}
 knitr::include_graphics(here::here("outputs", "latencia_base_03_histograma_poligono.png"))
 ```
 
+Ahora tenemos una idea más visual de la tendencia o sesgo a la derecha de la distribución de datos. Además, la densidad de frecuencia del ultimo intervalo es extremadamente bajo; coincidiendo con las conclusiones que hemos desarrollado acerca de los valores atípicos.
+
+La línea vertical discontinua que se puede observar es la moda; que calculamos anteriormente mediante una interpolación geométrica.
+
+También, podemos coincidir visualmente la idea de que la distribución es Leptocúrtica; bastante apuntalada alrededor de su moda.
+
+El histograma también nos permite entender mejor la estabilidad de funcionamiento nominal a la que nos referíamos. Es decir,
+visualmente, es evidente que en la gran mayoría de veces, los servidores responden con una latencia muy aceptable, o baja;
+sin grandes variaciones. Y que, sin embargo, en un pequeño porcentaje de veces, la latencia se dispara y se producen valores atípicos.
+
 #### Diagrama de Caja y Patillas
 
-Observemos ahora el diagrama de caja y patillas o `Boxplot`. Ahora es completamente evidente que existen valores atípicos.
-
-La línea roja horizontal discontinua es una ayuda visual para remarcar aún más el límite superior (`` `r round(limite_superior, 2)` ms``), a partir del cual consideramos los valores como atípicos; remarcados con pequeños círculos. Asimismo, podemos observar en la parte inferior izquierda la mediana, y los cuartiles superior e inferior.
-
-También, podemos ver que el rectángulo central o caja es bastante pequeño, lo cual concuerda con la observación del rango intercuartilico y el coeficiente de Curtosis.
+Observemos ahora el diagrama de caja y patillas o `Boxplot`.
 
 ```{r mostrar_boxplot_local, echo=FALSE, fig.align='center'}
 knitr::include_graphics(here::here("outputs", "latencia_base_03_boxplot.png"))
 ```
+
+Ahora es completamente evidente que existen valores atípicos.
+
+La línea roja horizontal discontinua es una ayuda visual para remarcar aún más el límite superior (`` `r round(limite_superior, 2)` ms``), a partir del cual consideramos los valores como atípicos; remarcados con pequeños círculos. Asimismo, podemos observar en la parte inferior izquierda la mediana, y los cuartiles superior e inferior.
+
+También, podemos ver que el rectángulo central o caja es bastante pequeño, lo cual concuerda con la observación del rango intercuartilico y el coeficiente de Curtosis.
 
 #### Polígono de Frecuencias Acumuladas
 
